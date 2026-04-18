@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OBSIZE — פחות רעש. יותר סטייל.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Custom Properties ─── */
+    :root {
+      --black:       #000000;
+      --white:       #ffffff;
+      --gray-100:    #f5f5f5;
+      --gray-200:    #e0e0e0;
+      --gray-400:    #9e9e9e;
+      --gray-600:    #4a4a4a;
+      --gray-800:    #1a1a1a;
+      --gray-900:    #0d0d0d;
+
+      --font-main:   'Heebo', sans-serif;
+
+      --ease:        0.3s ease;
+      --ease-slow:   0.6s ease;
+
+      --nav-h:       72px;
+    }
+
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-main);
+      background: var(--black);
+      color: var(--white);
+      direction: rtl;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+    ul { list-style: none; }
+    button { cursor: pointer; font-family: var(--font-main); border: none; background: none; }
+
+    /* ─── Fade-in on scroll ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── Buttons ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 36px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: 2px;
+      transition: background var(--ease), color var(--ease), border-color var(--ease), transform var(--ease), box-shadow var(--ease);
+    }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--white);
+      color: var(--black);
+      border: 2px solid var(--white);
+    }
+    .btn-primary:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.6);
+    }
+    .btn-outline:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      background: rgba(0,0,0,0.0);
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .nav-logo {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+    }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.75);
+      transition: color var(--ease);
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-cta .btn { padding: 10px 22px; font-size: 0.82rem; }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      right: 0; left: 0;
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 32px 5vw 40px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding-bottom: 16px;
+      transition: color var(--ease);
+    }
+    .mobile-menu a:hover { color: var(--white); }
+    .mobile-menu .btn { width: 100%; margin-top: 8px; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 5vw;
+      padding-top: var(--nav-h);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Parallax layers */
+    .hero-bg-layer {
+      position: absolute;
+      inset: -20%;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    /* Large ambient glow — moves slowest */
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      will-change: transform;
+    }
+    .hero-glow-1 {
+      width: 600px; height: 600px;
+      top: -10%; left: 20%;
+      background: radial-gradient(circle, rgba(255,255,255,0.055) 0%, transparent 70%);
+    }
+    .hero-glow-2 {
+      width: 400px; height: 400px;
+      bottom: 0%; right: 5%;
+      background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+    }
+
+    /* Floating noise grain overlay */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      padding: 60px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+      will-change: transform;
+    }
+
+    .hero-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 6px 14px;
+      border-radius: 2px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .hero-title span {
+      display: block;
+      color: rgba(255,255,255,0.22);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      max-width: 420px;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .hero-badge-dot {
+      width: 8px; height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+      50%      { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+    }
+    .hero-badge span {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+    }
+
+    /* Hero image side */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      will-change: transform;
+    }
+
+    .hero-img-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .hero-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--gray-900);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+    }
+
+    .placeholder-icon {
+      width: 64px; height: 64px;
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .placeholder-icon svg {
+      width: 28px; height: 28px;
+      opacity: 0.3;
+    }
+    .placeholder-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.2);
+      text-transform: uppercase;
+    }
+
+    .hero-floating-tag {
+      position: absolute;
+      bottom: 40px;
+      right: -20px;
+      background: var(--white);
+      color: var(--black);
+      padding: 12px 18px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    }
+    .hero-floating-tag span {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    /* subtle grid bg */
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+      z-index: 0;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+    }
+
+    /* Ghost word — parallax background text */
+    .hero-ghost-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(10rem, 22vw, 20rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform;
+      user-select: none;
+      line-height: 1;
+    }
+
+    /* Floating orb particles */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      will-change: transform;
+      z-index: 0;
+    }
+    .hero-orb-1 {
+      width: 2px; height: 2px;
+      background: rgba(255,255,255,0.6);
+      top: 22%; left: 15%;
+      box-shadow: 0 0 8px 2px rgba(255,255,255,0.2);
+    }
+    .hero-orb-2 {
+      width: 3px; height: 3px;
+      background: rgba(255,255,255,0.4);
+      top: 65%; left: 72%;
+      box-shadow: 0 0 10px 3px rgba(255,255,255,0.15);
+    }
+    .hero-orb-3 {
+      width: 2px; height: 2px;
+      background: rgba(255,255,255,0.5);
+      top: 40%; left: 88%;
+      box-shadow: 0 0 6px 2px rgba(255,255,255,0.15);
+    }
+    .hero-orb-4 {
+      width: 4px; height: 4px;
+      background: rgba(255,255,255,0.25);
+      top: 80%; left: 30%;
+      box-shadow: 0 0 12px 4px rgba(255,255,255,0.1);
+    }
+    .hero-orb-5 {
+      width: 2px; height: 2px;
+      background: rgba(255,255,255,0.5);
+      top: 12%; left: 55%;
+      box-shadow: 0 0 8px 2px rgba(255,255,255,0.2);
+    }
+
+    /* ─── TICKER ─── */
+    #ticker {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      padding: 18px 0;
+      background: var(--gray-900);
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker-scroll 26s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 40px;
+      white-space: nowrap;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+    .ticker-sep {
+      width: 4px; height: 4px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+    }
+
+    /* ─── PRODUCTS ─── */
+    #products {
+      padding: 120px 5vw;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 64px;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .section-link {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.45);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 2px;
+      transition: color var(--ease), border-color var(--ease);
+      white-space: nowrap;
+    }
+    .section-link:hover { color: var(--white); border-color: var(--white); }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--gray-900);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: border-color var(--ease), transform var(--ease);
+    }
+    .product-card:hover {
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-4px);
+    }
+
+    .product-img {
+      aspect-ratio: 3/4;
+      background: var(--gray-800);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.5));
+    }
+
+    /* Placeholder shirt illustration */
+    .shirt-placeholder {
+      width: 65%;
+      opacity: 0.12;
+    }
+
+    .product-img-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 24px;
+      opacity: 0;
+      transition: opacity var(--ease);
+    }
+    .product-card:hover .product-img-overlay {
+      opacity: 1;
+    }
+    .product-img-overlay .btn {
+      padding: 12px 28px;
+      font-size: 0.82rem;
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+    .product-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 8px;
+    }
+    .product-name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .product-price {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+    }
+    .product-colors {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .color-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: transform var(--ease);
+    }
+    .color-dot:hover { transform: scale(1.25); }
+
+    .product-sizes {
+      display: flex;
+      gap: 6px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .size-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 2px;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: border-color var(--ease), color var(--ease), background var(--ease);
+    }
+    .size-btn:hover {
+      border-color: rgba(255,255,255,0.45);
+      color: var(--white);
+    }
+    .size-btn.active {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .size-btn.sold-out {
+      opacity: 0.25;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    .size-btn.sold-out:hover {
+      border-color: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Card accent line top */
+    .product-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      opacity: 0;
+      transition: opacity var(--ease);
+    }
+    .product-card:hover::after { opacity: 1; }
+
+    /* ─── WHY US ─── */
+    #why {
+      padding: 100px 5vw;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: var(--gray-900);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-top: 72px;
+    }
+
+    .why-item {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 36px 28px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      transition: border-color var(--ease), background var(--ease);
+    }
+    .why-item:hover {
+      border-color: rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .why-icon {
+      width: 52px; height: 52px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .why-icon svg {
+      width: 24px; height: 24px;
+      stroke: rgba(255,255,255,0.7);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .why-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .why-text {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.75;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials {
+      padding: 120px 5vw;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 72px;
+    }
+
+    .testimonial-card {
+      padding: 36px 28px;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      background: var(--gray-900);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: border-color var(--ease), transform var(--ease);
+    }
+    .testimonial-card:hover {
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-3px);
+    }
+
+    .stars {
+      display: flex;
+      gap: 4px;
+    }
+    .star {
+      width: 14px; height: 14px;
+      fill: var(--white);
+    }
+    .star.dim { fill: rgba(255,255,255,0.2); }
+
+    .testimonial-text {
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.75;
+      flex: 1;
+    }
+    .testimonial-text::before {
+      content: '"';
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.1);
+      display: block;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .author-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--gray-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      flex-shrink: 0;
+    }
+    .author-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .author-handle {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2px;
+    }
+
+    /* ─── FINAL CTA ─── */
+    #cta-final {
+      padding: 140px 5vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    #cta-final::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-final-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 24px;
+    }
+
+    .cta-final-title {
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+
+    .cta-final-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 48px;
+    }
+
+    .cta-final-fine {
+      margin-top: 24px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 60px 5vw 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 64px;
+      align-items: start;
+      margin-bottom: 48px;
+    }
+
+    .footer-logo {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .footer-tagline {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.3);
+      max-width: 240px;
+      line-height: 1.6;
+    }
+
+    .footer-col-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 20px;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      transition: color var(--ease);
+    }
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-copyright {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 16px;
+    }
+    .social-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color var(--ease), background var(--ease);
+    }
+    .social-icon:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.05);
+    }
+    .social-icon svg {
+      width: 16px; height: 16px;
+      fill: rgba(255,255,255,0.55);
+      transition: fill var(--ease);
+    }
+    .social-icon:hover svg { fill: var(--white); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1200px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .why-grid { gap: 24px; }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials-grid .testimonial-card:last-child { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      :root { --nav-h: 64px; }
+
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+
+      #hero {
+        grid-template-columns: 1fr;
+        text-align: right;
+        padding-top: calc(var(--nav-h) + 24px);
+      }
+      .hero-content { align-items: flex-start; }
+      .hero-sub { max-width: 100%; }
+      .hero-visual { margin-top: 48px; }
+      .hero-floating-tag { right: 0; bottom: 20px; }
+
+      .products-grid { grid-template-columns: 1fr; }
+
+      .why-grid { grid-template-columns: 1fr; gap: 16px; }
+      .why-item { padding: 28px 20px; }
+
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .testimonials-grid .testimonial-card:last-child { display: block; }
+
+      .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .footer-bottom { flex-direction: column; gap: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; width: 100%; }
+      .hero-btns .btn { width: 100%; }
+      .cta-final-title { font-size: 2rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">OBSIZE</a>
+    <ul class="nav-links">
+      <li><a href="#products">קולקציה</a></li>
+      <li><a href="#why">אודות</a></li>
+      <li><a href="#testimonials">ביקורות</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#products" class="btn btn-primary">לקנייה</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="תפריט">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#products" onclick="closeMobileMenu()">קולקציה</a>
+    <a href="#why" onclick="closeMobileMenu()">אודות</a>
+    <a href="#testimonials" onclick="closeMobileMenu()">ביקורות</a>
+    <a href="#products" class="btn btn-primary" onclick="closeMobileMenu()">לקנייה עכשיו</a>
+  </div>
+
+  <!-- ─── HERO ─── -->
+  <section id="hero">
+    <!-- Parallax background layers -->
+    <div class="hero-ghost-text" data-parallax-speed="0.15">OBSIZE</div>
+    <div class="hero-glow hero-glow-1" data-parallax-speed="0.08"></div>
+    <div class="hero-glow hero-glow-2" data-parallax-speed="0.12"></div>
+    <div class="hero-orb hero-orb-1" data-parallax-speed="0.25"></div>
+    <div class="hero-orb hero-orb-2" data-parallax-speed="0.35"></div>
+    <div class="hero-orb hero-orb-3" data-parallax-speed="0.2"></div>
+    <div class="hero-orb hero-orb-4" data-parallax-speed="0.3"></div>
+    <div class="hero-orb hero-orb-5" data-parallax-speed="0.18"></div>
+
+    <div class="hero-content" data-parallax-speed="-0.06">
+      <div class="hero-tag reveal">obsessed with oversized</div>
+      <h1 class="hero-title reveal reveal-delay-1">
+        פחות רעש.<br />
+        <span>יותר סטייל.</span>
+      </h1>
+      <p class="hero-sub reveal reveal-delay-2">
+        חולצות oversized שנועדו לנוח על הגוף, לא נגדו.
+        בד כבד. עיצוב נקי. פשוט עובד.
+      </p>
+      <div class="hero-btns reveal reveal-delay-3">
+        <a href="#products" class="btn btn-primary">לקנייה עכשיו</a>
+        <a href="#products" class="btn btn-outline">לקולקציה</a>
+      </div>
+      <div class="hero-badge reveal reveal-delay-4">
+        <div class="hero-badge-dot"></div>
+        <span>In stock — משלוח תוך 48 שעות</span>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal reveal-delay-2" data-parallax-speed="-0.1">
+      <div class="hero-img-wrap">
+        <div class="hero-placeholder">
+          <img src="העיצוב הייחודי של _BLOOM_.png" alt="OBSIZE Hero Shirt" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />
+        </div>
+        <div class="hero-floating-tag">
+          מחיר השקה
+          <span>₪149</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TICKER ─── -->
+  <div id="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <!-- Duplicated for seamless loop -->
+      <div class="ticker-item"><span>משלוח חינם בכל הארץ</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>1,200+ לקוחות מרוצים</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>100% כותנה פרמיום</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>משלוח תוך 48 שעות</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>החזרה חינם עד 30 יום</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>עיצוב מינימליסטי נצחי</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>משלוח חינם בכל הארץ</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>1,200+ לקוחות מרוצים</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>100% כותנה פרמיום</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>משלוח תוך 48 שעות</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>החזרה חינם עד 30 יום</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>עיצוב מינימליסטי נצחי</span><span class="ticker-sep"></span></div>
+    </div>
+  </div>
+
+  <!-- ─── PRODUCTS ─── -->
+  <section id="products">
+    <div class="section-header reveal">
+      <div>
+        <p class="section-label">הקולקציה שלנו</p>
+        <h2 class="section-title">נבחרות העונה</h2>
+      </div>
+      <a href="#" class="section-link">כל הפריטים ←</a>
+    </div>
+
+    <div class="products-grid">
+      <!-- Card 1 -->
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-img">
+          <svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white">
+            <path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/>
+          </svg>
+          <div class="product-img-overlay">
+            <button class="btn btn-primary">הוסף לסל</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-tag">Best Seller</p>
+          <h3 class="product-name">Essential Oversized Tee</h3>
+          <p class="product-price">₪149</p>
+          <div class="product-colors">
+            <div class="color-dot" style="background:#000;border-color:rgba(255,255,255,0.4);" title="שחור"></div>
+            <div class="color-dot" style="background:#fff;" title="לבן"></div>
+            <div class="color-dot" style="background:#6b6b6b;" title="אפור"></div>
+          </div>
+          <div class="product-sizes">
+            <button class="size-btn">S</button>
+            <button class="size-btn">M</button>
+            <button class="size-btn active">L</button>
+            <button class="size-btn">XL</button>
+            <button class="size-btn sold-out">XXL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img">
+          <svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white">
+            <path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/>
+          </svg>
+          <div class="product-img-overlay">
+            <button class="btn btn-primary">הוסף לסל</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-tag">New Arrival</p>
+          <h3 class="product-name">Heavy Drop Shoulder</h3>
+          <p class="product-price">₪179</p>
+          <div class="product-colors">
+            <div class="color-dot" style="background:#1a1a2e;" title="נייבי"></div>
+            <div class="color-dot" style="background:#2d2d2d;" title="פחם"></div>
+            <div class="color-dot" style="background:#fff;" title="לבן"></div>
+          </div>
+          <div class="product-sizes">
+            <button class="size-btn sold-out">S</button>
+            <button class="size-btn">M</button>
+            <button class="size-btn">L</button>
+            <button class="size-btn active">XL</button>
+            <button class="size-btn">XXL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-img">
+          <svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white">
+            <path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/>
+          </svg>
+          <div class="product-img-overlay">
+            <button class="btn btn-primary">הוסף לסל</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-tag">Limited</p>
+          <h3 class="product-name">Washed Boxy Tee</h3>
+          <p class="product-price">₪199</p>
+          <div class="product-colors">
+            <div class="color-dot" style="background:#4a3728;" title="חום שטוף"></div>
+            <div class="color-dot" style="background:#3d3d3d;" title="אפור כהה"></div>
+          </div>
+          <div class="product-sizes">
+            <button class="size-btn">S</button>
+            <button class="size-btn active">M</button>
+            <button class="size-btn">L</button>
+            <button class="size-btn sold-out">XL</button>
+            <button class="size-btn sold-out">XXL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="product-card reveal reveal-delay-4">
+        <div class="product-img">
+          <img src="עיצוב סאקורה על חולצה שחורה.png" alt="Sakur Tee" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />
+          <div class="product-img-overlay">
+            <button class="btn btn-primary">הוסף לסל</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-tag">New Drop</p>
+          <h3 class="product-name">Sakur</h3>
+          <p class="product-price">₪150</p>
+          <div class="product-colors">
+            <div class="color-dot" style="background:#000;border-color:rgba(255,255,255,0.4);" title="שחור"></div>
+          </div>
+          <div class="product-sizes">
+            <button class="size-btn">S</button>
+            <button class="size-btn active">M</button>
+            <button class="size-btn">L</button>
+            <button class="size-btn">XL</button>
+            <button class="size-btn sold-out">XXL</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHY US ─── -->
+  <section id="why">
+    <div class="section-header reveal">
+      <div>
+        <p class="section-label">למה לבחור בנו</p>
+        <h2 class="section-title">הסטנדרט שלנו</h2>
+      </div>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-item reveal reveal-delay-1">
+        <div class="why-icon">
+          <!-- fabric icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3 class="why-title">בד פרמיום</h3>
+        <p class="why-text">
+          100% כותנה כבדה 280 גרם. מרגיש יקר ביד ועל הגוף.
+          שומר על הצורה גם אחרי עשרות כביסות.
+        </p>
+      </div>
+
+      <div class="why-item reveal reveal-delay-2">
+        <div class="why-icon">
+          <!-- oversized cut icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/>
+          </svg>
+        </div>
+        <h3 class="why-title">חיתוך Oversized</h3>
+        <p class="why-text">
+          כתפיים נפולות, גזרה רחבה שיושבת בדיוק כמו שצריך.
+          לא גדול מדי, לא קטן — פיט שנראה מכוון.
+        </p>
+      </div>
+
+      <div class="why-item reveal reveal-delay-3">
+        <div class="why-icon">
+          <!-- timeless icon -->
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <h3 class="why-title">עיצוב נצחי</h3>
+        <p class="why-text">
+          ללא לוגואים ענקיים, ללא טרנדים חולפים.
+          פריטים שתלבש היום, בעוד שנה, ובעוד שלוש.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TESTIMONIALS ─── -->
+  <section id="testimonials">
+    <div class="section-header reveal">
+      <div>
+        <p class="section-label">מה אומרים עלינו</p>
+        <h2 class="section-title">לקוחות מדברים</h2>
+      </div>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars">
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p class="testimonial-text">לבשתי את החולצה ביום הראשון שקיבלתי אותה ולא הורדתי שבוע. הבד הכבד עושה את כל ההבדל — מרגיש כמו מותג אירופאי שעולה פי שלוש.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">ד</div>
+          <div>
+            <p class="author-name">דניאל כהן</p>
+            <p class="author-handle">תל אביב</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p class="testimonial-text">הזמנתי שלוש בבת אחת. הגיעו תוך יומיים. הגזרה מושלמת — לא oversized באופן מגוחך, פשוט יושבת נכון. מאז כולם שואלים איפה קניתי.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">מ</div>
+          <div>
+            <p class="author-name">מיכל לוי</p>
+            <p class="author-handle">ירושלים</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-3">
+        <div class="stars">
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="star dim" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p class="testimonial-text">כבר רכשתי מברנדים אחרים שיושבים בחו"ל. זה אותו הדבר, פשוט פה בארץ ובמחיר סביר. איכות האריגה מדהימה. מומלץ בחום.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">א</div>
+          <div>
+            <p class="author-name">אור ברקוביץ'</p>
+            <p class="author-handle">חיפה</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FINAL CTA ─── -->
+  <section id="cta-final">
+    <p class="cta-final-label reveal">obsessed with oversized</p>
+    <h2 class="cta-final-title reveal reveal-delay-1">מוכן לשדרג את הארון שלך?</h2>
+    <p class="cta-final-sub reveal reveal-delay-2">בחר צבע. בחר מידה. קבל בבית תוך יומיים.</p>
+    <div class="reveal reveal-delay-3">
+      <a href="#products" class="btn btn-primary" style="font-size:1rem; padding:18px 48px;">להזמנה עכשיו</a>
+    </div>
+    <p class="cta-final-fine reveal reveal-delay-4">משלוח חינם · החזרה חינם עד 30 יום · תשלום מאובטח</p>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <p class="footer-logo">OBSIZE</p>
+        <p class="footer-tagline">obsessed with oversized.<br/>חולצות oversized פרמיום מישראל.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">עזרה</p>
+        <ul class="footer-links">
+          <li><a href="#">שאלות נפוצות</a></li>
+          <li><a href="#">מדיניות החזרות</a></li>
+          <li><a href="#">צור קשר</a></li>
+          <li><a href="#">מדיניות פרטיות</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">ניווט</p>
+        <ul class="footer-links">
+          <li><a href="#products">קולקציה</a></li>
+          <li><a href="#why">אודות</a></li>
+          <li><a href="#testimonials">ביקורות</a></li>
+          <li><a href="#">בלוג</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copyright">© 2026 OBSIZE. כל הזכויות שמורות.</p>
+      <div class="social-icons">
+        <!-- Instagram -->
+        <a href="#" class="social-icon" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <!-- TikTok -->
+        <a href="#" class="social-icon" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </a>
+        <!-- WhatsApp -->
+        <a href="#" class="social-icon" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── JS ─── -->
+  <script>
+    // ── Hero Parallax ──
+    (function() {
+      const hero = document.getElementById('hero');
+      const layers = hero.querySelectorAll('[data-parallax-speed]');
+
+      // Mouse-move parallax (desktop only)
+      let mouseX = 0, mouseY = 0;
+      let curX = 0, curY = 0;
+      let rafId = null;
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      function tick() {
+        curX = lerp(curX, mouseX, 0.06);
+        curY = lerp(curY, mouseY, 0.06);
+
+        layers.forEach(el => {
+          const speed = parseFloat(el.dataset.parallaxSpeed);
+          const tx = curX * speed;
+          const ty = curY * speed;
+          el.style.transform = `translate(${tx}px, ${ty}px)`;
+        });
+
+        rafId = requestAnimationFrame(tick);
+      }
+
+      hero.addEventListener('mousemove', e => {
+        const rect = hero.getBoundingClientRect();
+        mouseX = (e.clientX - rect.left - rect.width  / 2);
+        mouseY = (e.clientY - rect.top  - rect.height / 2);
+      }, { passive: true });
+
+      hero.addEventListener('mouseleave', () => {
+        mouseX = 0; mouseY = 0;
+      }, { passive: true });
+
+      // Only run on non-touch devices
+      if (window.matchMedia('(hover: hover)').matches) {
+        tick();
+      }
+
+      // Scroll-based vertical shift for the visual card
+      const heroVisual = hero.querySelector('.hero-visual');
+      const heroContent = hero.querySelector('.hero-content');
+      const ghostText   = hero.querySelector('.hero-ghost-text');
+
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        if (scrollY > window.innerHeight) return;
+        const pct = scrollY / window.innerHeight;
+
+        if (heroVisual)  heroVisual.style.transform  = `translateY(${pct * 60}px)`;
+        if (heroContent) heroContent.style.transform = `translateY(${pct * 30}px)`;
+        if (ghostText)   ghostText.style.transform   = `translate(-50%, calc(-50% + ${pct * 80}px))`;
+      }, { passive: true });
+    })();
+
+    // ── Navbar scroll opacity ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // ── Mobile menu ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Close mobile menu on outside click
+    document.addEventListener('click', (e) => {
+      if (!navbar.contains(e.target) && !mobileMenu.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    // ── Scroll reveal ──
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Size selection ──
+    document.querySelectorAll('.product-sizes').forEach(group => {
+      group.querySelectorAll('.size-btn:not(.sold-out)').forEach(btn => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    });
+
+    // ── Product color selection ──
+    document.querySelectorAll('.product-colors').forEach(group => {
+      const dots = group.querySelectorAll('.color-dot');
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          dots.forEach(d => d.style.outline = '');
+          dot.style.outline = '2px solid rgba(255,255,255,0.6)';
+          dot.style.outlineOffset = '2px';
+        });
+      });
+    });
+
+    // ── Smooth scroll for nav links ──
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          const offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
