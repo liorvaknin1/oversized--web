@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OBSIZE — צ׳קאאוט</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- ─── MINIMAL CHECKOUT HEADER ─── -->
+  <header class="checkout-header">
+    <a href="index.html" class="nav-logo">OBSIZE</a>
+    <a href="index.html#products" class="checkout-continue">המשך קניות ←</a>
+  </header>
+
+  <!-- ─── CHECKOUT VIEW ─── -->
+  <main class="checkout" id="checkout">
+    <div class="checkout-grid">
+      <form class="checkout-form" id="checkoutForm" novalidate>
+        <section class="checkout-section">
+          <h2 class="checkout-section-title">פרטי התקשרות</h2>
+          <div class="checkout-field">
+            <label for="email">אימייל</label>
+            <input type="email" id="email" name="email" autocomplete="email" required />
+            <span class="checkout-error" data-for="email"></span>
+          </div>
+          <div class="checkout-field">
+            <label for="phone">טלפון</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" required placeholder="050-0000000" />
+            <span class="checkout-error" data-for="phone"></span>
+          </div>
+        </section>
+
+        <section class="checkout-section">
+          <h2 class="checkout-section-title">כתובת למשלוח</h2>
+          <div class="checkout-row">
+            <div class="checkout-field">
+              <label for="firstName">שם פרטי</label>
+              <input type="text" id="firstName" name="firstName" autocomplete="given-name" required />
+              <span class="checkout-error" data-for="firstName"></span>
+            </div>
+            <div class="checkout-field">
+              <label for="lastName">שם משפחה</label>
+              <input type="text" id="lastName" name="lastName" autocomplete="family-name" required />
+              <span class="checkout-error" data-for="lastName"></span>
+            </div>
+          </div>
+          <div class="checkout-field">
+            <label for="address">כתובת</label>
+            <input type="text" id="address" name="address" autocomplete="street-address" required placeholder="רחוב ומספר בית" />
+            <span class="checkout-error" data-for="address"></span>
+          </div>
+          <div class="checkout-row">
+            <div class="checkout-field">
+              <label for="city">עיר</label>
+              <input type="text" id="city" name="city" autocomplete="address-level2" required />
+              <span class="checkout-error" data-for="city"></span>
+            </div>
+            <div class="checkout-field">
+              <label for="zip">מיקוד</label>
+              <input type="text" id="zip" name="zip" autocomplete="postal-code" required inputmode="numeric" maxlength="7" />
+              <span class="checkout-error" data-for="zip"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="checkout-section">
+          <h2 class="checkout-section-title">פרטי תשלום</h2>
+          <p class="checkout-disclaimer">
+            🔒 הדגמה בלבד — אין חיוב אמיתי. אינטגרציה לסולק תתווסף בקרוב.
+          </p>
+          <div class="checkout-field">
+            <label for="cardNumber">מספר כרטיס</label>
+            <input type="text" id="cardNumber" name="cardNumber" autocomplete="cc-number" required inputmode="numeric" placeholder="1234 5678 9012 3456" maxlength="19" />
+            <span class="checkout-error" data-for="cardNumber"></span>
+          </div>
+          <div class="checkout-row">
+            <div class="checkout-field">
+              <label for="cardExpiry">תוקף</label>
+              <input type="text" id="cardExpiry" name="cardExpiry" autocomplete="cc-exp" required placeholder="MM/YY" maxlength="5" />
+              <span class="checkout-error" data-for="cardExpiry"></span>
+            </div>
+            <div class="checkout-field">
+              <label for="cardCvv">CVV</label>
+              <input type="text" id="cardCvv" name="cardCvv" autocomplete="cc-csc" required inputmode="numeric" placeholder="123" maxlength="4" />
+              <span class="checkout-error" data-for="cardCvv"></span>
+            </div>
+          </div>
+        </section>
+
+        <button type="submit" class="btn btn-primary checkout-submit" id="checkoutSubmit">
+          <span class="checkout-submit-label">השלם הזמנה</span>
+          <span class="checkout-submit-amount" id="checkoutSubmitAmount"></span>
+        </button>
+        <p class="checkout-policy">בלחיצה על "השלם הזמנה" את/ה מאשר/ת את תנאי השימוש ומדיניות הפרטיות.</p>
+      </form>
+
+      <aside class="checkout-summary" id="checkoutSummary">
+        <h2 class="checkout-section-title">סיכום הזמנה</h2>
+        <div class="checkout-items" id="checkoutItems"></div>
+        <div class="checkout-totals">
+          <div class="checkout-line"><span>סה"כ ביניים</span><span id="checkoutSubtotal">₪0</span></div>
+          <div class="checkout-line"><span>משלוח</span><span class="checkout-free">חינם</span></div>
+          <div class="checkout-line checkout-line-total"><span>סה"כ</span><span id="checkoutTotal">₪0</span></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ─── EMPTY CART STATE ─── -->
+  <section class="checkout-empty" id="checkoutEmpty" hidden>
+    <h1>העגלה שלך ריקה</h1>
+    <p>אין פריטים לתשלום — חזור/י לקולקציה כדי להוסיף פריטים.</p>
+    <a href="index.html#products" class="btn btn-primary">לקולקציה</a>
+  </section>
+
+  <!-- ─── SUCCESS STATE ─── -->
+  <section class="checkout-success" id="checkoutSuccess" hidden>
+    <div class="checkout-success-inner">
+      <div class="checkout-success-icon" aria-hidden="true">
+        <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="26" cy="26" r="24"/>
+          <path d="M14 27l8 8 16-18"/>
+        </svg>
+      </div>
+      <p class="checkout-success-tag">obsessed with oversized</p>
+      <h1>תודה על ההזמנה!</h1>
+      <p class="checkout-success-sub">קיבלנו את ההזמנה — אנחנו כבר אורזים.</p>
+      <div class="checkout-success-meta">
+        <div>
+          <span class="checkout-success-label">מספר הזמנה</span>
+          <strong id="orderNumber"></strong>
+        </div>
+        <div>
+          <span class="checkout-success-label">אישור נשלח ל</span>
+          <strong id="orderEmail"></strong>
+        </div>
+        <div>
+          <span class="checkout-success-label">סכום</span>
+          <strong id="orderTotal"></strong>
+        </div>
+      </div>
+      <p class="checkout-success-note">המשלוח יגיע אליך תוך 48 שעות. נשלח לך עדכון כשהחבילה יוצאת לדרך.</p>
+      <a href="index.html" class="btn btn-primary">חזרה לעמוד הבית</a>
+    </div>
+  </section>
+
+  <footer class="footer-min">
+    <p class="footer-copyright">© 2026 OBSIZE. כל הזכויות שמורות.</p>
+    <p class="footer-copyright">תשלום מאובטח · משלוח חינם · החזרה עד 30 יום</p>
+  </footer>
+
+  <script src="checkout.js" defer></script>
+</body>
+</html>

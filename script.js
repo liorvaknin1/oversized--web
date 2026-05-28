@@ -368,7 +368,7 @@
 
       if (checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
-          showToast('צ׳קאאוט יתווסף בקרוב');
+          window.location.href = 'checkout.html';
         });
       }
 
