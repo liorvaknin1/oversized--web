@@ -21,12 +21,19 @@
       <li><a href="#why">אודות</a></li>
       <li><a href="#testimonials">ביקורות</a></li>
     </ul>
-    <div class="nav-cta">
-      <a href="#products" class="btn btn-primary">לקנייה</a>
+    <div class="nav-end">
+      <button class="cart-toggle" id="cartToggle" aria-label="פתח עגלה">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 7h12l-1.4 9.8a2 2 0 0 1-2 1.7H9.4a2 2 0 0 1-2-1.7L6 7Z"/>
+          <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge" hidden>0</span>
+      </button>
+      <a href="#products" class="btn btn-primary nav-buy-btn">לקנייה</a>
+      <button class="hamburger" id="hamburger" aria-label="תפריט">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="hamburger" id="hamburger" aria-label="תפריט">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
 
   <div class="mobile-menu" id="mobileMenu">
@@ -112,13 +119,13 @@
 
     <div class="products-grid">
       <!-- Card 1 -->
-      <div class="product-card reveal reveal-delay-1">
+      <div class="product-card reveal reveal-delay-1" data-product-id="essential-tee" data-product-name="Essential Oversized Tee" data-product-price="149">
         <div class="product-img">
           <svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white">
             <path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/>
           </svg>
           <div class="product-img-overlay">
-            <button class="btn btn-primary">הוסף לסל</button>
+            <button class="btn btn-primary add-to-cart-btn">הוסף לסל</button>
           </div>
         </div>
         <div class="product-info">
@@ -141,13 +148,13 @@
       </div>
 
       <!-- Card 2 -->
-      <div class="product-card reveal reveal-delay-2">
+      <div class="product-card reveal reveal-delay-2" data-product-id="heavy-drop" data-product-name="Heavy Drop Shoulder" data-product-price="179">
         <div class="product-img">
           <svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white">
             <path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/>
           </svg>
           <div class="product-img-overlay">
-            <button class="btn btn-primary">הוסף לסל</button>
+            <button class="btn btn-primary add-to-cart-btn">הוסף לסל</button>
           </div>
         </div>
         <div class="product-info">
@@ -170,13 +177,13 @@
       </div>
 
       <!-- Card 3 -->
-      <div class="product-card reveal reveal-delay-3">
+      <div class="product-card reveal reveal-delay-3" data-product-id="washed-boxy" data-product-name="Washed Boxy Tee" data-product-price="199">
         <div class="product-img">
           <svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white">
             <path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/>
           </svg>
           <div class="product-img-overlay">
-            <button class="btn btn-primary">הוסף לסל</button>
+            <button class="btn btn-primary add-to-cart-btn">הוסף לסל</button>
           </div>
         </div>
         <div class="product-info">
@@ -198,11 +205,11 @@
       </div>
 
       <!-- Card 4 -->
-      <div class="product-card reveal reveal-delay-4">
+      <div class="product-card reveal reveal-delay-4" data-product-id="sakur" data-product-name="Sakur" data-product-price="150" data-product-image="עיצוב סאקורה על חולצה שחורה.png">
         <div class="product-img">
           <img src="עיצוב סאקורה על חולצה שחורה.png" alt="Sakur Tee" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />
           <div class="product-img-overlay">
-            <button class="btn btn-primary">הוסף לסל</button>
+            <button class="btn btn-primary add-to-cart-btn">הוסף לסל</button>
           </div>
         </div>
         <div class="product-info">
@@ -403,6 +410,28 @@
       </div>
     </div>
   </footer>
+
+  <!-- ─── CART DRAWER ─── -->
+  <div class="cart-backdrop" id="cartBackdrop" aria-hidden="true"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="עגלת קניות" aria-hidden="true">
+    <header class="cart-drawer-header">
+      <h2 class="cart-drawer-title">העגלה שלך</h2>
+      <button class="cart-drawer-close" id="cartClose" aria-label="סגור עגלה">&times;</button>
+    </header>
+    <div class="cart-empty" id="cartEmpty">
+      <p>העגלה שלך ריקה</p>
+      <span>הוסף פריטים כדי להתחיל</span>
+    </div>
+    <div class="cart-items" id="cartItems" hidden></div>
+    <footer class="cart-drawer-footer" id="cartFooter" hidden>
+      <div class="cart-subtotal">
+        <span>סה"כ ביניים</span>
+        <strong id="cartTotal">₪0</strong>
+      </div>
+      <p class="cart-shipping-note">משלוח יחושב בצ׳קאאוט</p>
+      <button class="btn btn-primary cart-checkout" id="cartCheckout">למעבר לתשלום</button>
+    </footer>
+  </aside>
 
   <!-- ─── JS ─── -->
   <script src="script.js" defer></script>

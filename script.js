@@ -111,9 +111,19 @@
     // ── Product color selection ──
     document.querySelectorAll('.product-colors').forEach(group => {
       const dots = group.querySelectorAll('.color-dot');
+      // Mark the first dot as selected by default
+      if (dots[0]) {
+        dots[0].classList.add('selected');
+        dots[0].style.outline = '2px solid rgba(255,255,255,0.6)';
+        dots[0].style.outlineOffset = '2px';
+      }
       dots.forEach(dot => {
         dot.addEventListener('click', () => {
-          dots.forEach(d => d.style.outline = '');
+          dots.forEach(d => {
+            d.classList.remove('selected');
+            d.style.outline = '';
+          });
+          dot.classList.add('selected');
           dot.style.outline = '2px solid rgba(255,255,255,0.6)';
           dot.style.outlineOffset = '2px';
         });
@@ -134,3 +144,221 @@
         }
       });
     });
+
+    // ── Cart ──
+    (function() {
+      const STORAGE_KEY = 'obsize_cart_v1';
+      const drawer = document.getElementById('cartDrawer');
+      const backdrop = document.getElementById('cartBackdrop');
+      const toggleBtn = document.getElementById('cartToggle');
+      const closeBtn = document.getElementById('cartClose');
+      const badge = document.getElementById('cartBadge');
+      const itemsEl = document.getElementById('cartItems');
+      const emptyEl = document.getElementById('cartEmpty');
+      const footerEl = document.getElementById('cartFooter');
+      const totalEl = document.getElementById('cartTotal');
+      const checkoutBtn = document.getElementById('cartCheckout');
+
+      let items = loadCart();
+
+      function loadCart() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function saveCart() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        } catch (e) {}
+      }
+
+      function itemKey(item) {
+        return `${item.id}::${item.size}::${item.color}`;
+      }
+
+      function formatPrice(value) {
+        return `₪${value.toLocaleString('he-IL')}`;
+      }
+
+      function getTotalCount() {
+        return items.reduce((sum, it) => sum + it.qty, 0);
+      }
+
+      function getSubtotal() {
+        return items.reduce((sum, it) => sum + it.price * it.qty, 0);
+      }
+
+      // Reusable shirt placeholder for products with no image
+      const SHIRT_SVG = '<svg viewBox="0 0 200 240" aria-hidden="true"><path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/></svg>';
+
+      function render() {
+        const hasItems = items.length > 0;
+        emptyEl.hidden = hasItems;
+        itemsEl.hidden = !hasItems;
+        footerEl.hidden = !hasItems;
+
+        const count = getTotalCount();
+        if (count > 0) {
+          badge.textContent = count > 99 ? '99+' : String(count);
+          badge.hidden = false;
+        } else {
+          badge.hidden = true;
+        }
+
+        totalEl.textContent = formatPrice(getSubtotal());
+
+        itemsEl.innerHTML = items.map(it => {
+          const imgHTML = it.image
+            ? `<img src="${escapeAttr(it.image)}" alt="${escapeAttr(it.name)}" />`
+            : SHIRT_SVG;
+          const meta = [it.size && `מידה ${it.size}`, it.color].filter(Boolean).join(' · ');
+          const key = itemKey(it);
+          return `
+            <div class="cart-item" data-key="${escapeAttr(key)}">
+              <div class="cart-item-img">${imgHTML}</div>
+              <div class="cart-item-info">
+                <p class="cart-item-name">${escapeHTML(it.name)}</p>
+                <p class="cart-item-meta">${escapeHTML(meta)}</p>
+                <div class="cart-item-qty">
+                  <button class="cart-qty-btn" data-action="dec" aria-label="הפחת"${it.qty <= 1 ? ' disabled' : ''}>−</button>
+                  <span class="cart-qty-value">${it.qty}</span>
+                  <button class="cart-qty-btn" data-action="inc" aria-label="הוסף">+</button>
+                </div>
+              </div>
+              <div class="cart-item-right">
+                <span class="cart-item-price">${formatPrice(it.price * it.qty)}</span>
+                <button class="cart-item-remove" data-action="remove">הסר</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function escapeHTML(s) {
+        return String(s ?? '').replace(/[&<>"']/g, c => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+      }
+      function escapeAttr(s) { return escapeHTML(s); }
+
+      function openDrawer() {
+        drawer.classList.add('open');
+        backdrop.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        drawer.classList.remove('open');
+        backdrop.classList.remove('open');
+        drawer.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      function addItem(newItem) {
+        const key = itemKey(newItem);
+        const existing = items.find(it => itemKey(it) === key);
+        if (existing) {
+          existing.qty += newItem.qty;
+        } else {
+          items.push(newItem);
+        }
+        saveCart();
+        render();
+      }
+
+      function updateQty(key, delta) {
+        const it = items.find(x => itemKey(x) === key);
+        if (!it) return;
+        it.qty = Math.max(1, it.qty + delta);
+        saveCart();
+        render();
+      }
+
+      function removeItem(key) {
+        items = items.filter(x => itemKey(x) !== key);
+        saveCart();
+        render();
+      }
+
+      // ── Toast ──
+      let toastEl;
+      let toastTimer;
+      function showToast(message) {
+        if (!toastEl) {
+          toastEl = document.createElement('div');
+          toastEl.className = 'cart-toast';
+          document.body.appendChild(toastEl);
+        }
+        toastEl.textContent = message;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+      }
+
+      // ── Wire up "Add to cart" buttons ──
+      document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const card = btn.closest('.product-card');
+          if (!card) return;
+
+          const id = card.dataset.productId;
+          const name = card.dataset.productName;
+          const price = parseInt(card.dataset.productPrice, 10);
+          const image = card.dataset.productImage || '';
+
+          const activeSize = card.querySelector('.size-btn.active:not(.sold-out)');
+          const selectedColor = card.querySelector('.color-dot.selected') || card.querySelector('.color-dot');
+
+          if (!activeSize) {
+            showToast('בחר מידה זמינה');
+            return;
+          }
+
+          addItem({
+            id,
+            name,
+            price,
+            image,
+            size: activeSize.textContent.trim(),
+            color: selectedColor ? (selectedColor.getAttribute('title') || '') : '',
+            qty: 1,
+          });
+
+          showToast('נוסף לעגלה');
+          openDrawer();
+        });
+      });
+
+      // ── Drawer events ──
+      toggleBtn.addEventListener('click', openDrawer);
+      closeBtn.addEventListener('click', closeDrawer);
+      backdrop.addEventListener('click', closeDrawer);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+      });
+
+      // ── Cart item actions (event delegation) ──
+      itemsEl.addEventListener('click', (e) => {
+        const action = e.target.closest('[data-action]')?.dataset.action;
+        if (!action) return;
+        const row = e.target.closest('.cart-item');
+        const key = row?.dataset.key;
+        if (!key) return;
+
+        if (action === 'inc') updateQty(key, 1);
+        else if (action === 'dec') updateQty(key, -1);
+        else if (action === 'remove') removeItem(key);
+      });
+
+      checkoutBtn.addEventListener('click', () => {
+        showToast('צ׳קאאוט יתווסף בקרוב');
+      });
+
+      render();
+    })();
