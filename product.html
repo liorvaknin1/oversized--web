@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="pageTitle">OBSIZE — מוצר</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav id="navbar" class="navbar-solid">
+    <a href="index.html" class="nav-logo">OBSIZE</a>
+    <ul class="nav-links">
+      <li><a href="index.html#products">קולקציה</a></li>
+      <li><a href="index.html#why">אודות</a></li>
+      <li><a href="index.html#testimonials">ביקורות</a></li>
+    </ul>
+    <div class="nav-end">
+      <button class="cart-toggle" id="cartToggle" aria-label="פתח עגלה">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 7h12l-1.4 9.8a2 2 0 0 1-2 1.7H9.4a2 2 0 0 1-2-1.7L6 7Z"/>
+          <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge" hidden>0</span>
+      </button>
+      <a href="index.html#products" class="btn btn-primary nav-buy-btn">לקולקציה</a>
+      <button class="hamburger" id="hamburger" aria-label="תפריט">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#products" onclick="closeMobileMenu()">קולקציה</a>
+    <a href="index.html#why" onclick="closeMobileMenu()">אודות</a>
+    <a href="index.html#testimonials" onclick="closeMobileMenu()">ביקורות</a>
+    <a href="index.html#products" class="btn btn-primary" onclick="closeMobileMenu()">לקולקציה</a>
+  </div>
+
+  <!-- ─── PDP ─── -->
+  <main class="pdp" id="pdp">
+    <nav class="pdp-breadcrumb" aria-label="ניווט">
+      <a href="index.html">בית</a>
+      <span>›</span>
+      <a href="index.html#products">קולקציה</a>
+      <span>›</span>
+      <span id="pdpBreadcrumbName" class="pdp-breadcrumb-current">מוצר</span>
+    </nav>
+
+    <div class="pdp-grid">
+      <section class="pdp-gallery" aria-label="גלריית מוצר">
+        <div class="pdp-main-image" id="pdpMainImage"></div>
+        <div class="pdp-thumbnails" id="pdpThumbnails" hidden></div>
+      </section>
+
+      <section class="pdp-details">
+        <p class="pdp-tag" id="pdpTag"></p>
+        <h1 class="pdp-name" id="pdpName"></h1>
+        <p class="pdp-price" id="pdpPrice"></p>
+        <p class="pdp-description" id="pdpDescription"></p>
+
+        <div class="pdp-section">
+          <p class="pdp-section-label">צבע: <span id="pdpColorName" class="pdp-section-value"></span></p>
+          <div class="pdp-colors" id="pdpColors"></div>
+        </div>
+
+        <div class="pdp-section">
+          <div class="pdp-section-row">
+            <p class="pdp-section-label">מידה</p>
+            <button type="button" class="pdp-size-guide" id="pdpSizeGuide">מדריך מידות</button>
+          </div>
+          <div class="pdp-sizes" id="pdpSizes"></div>
+          <p class="pdp-size-note" id="pdpSizeNote" hidden></p>
+        </div>
+
+        <div class="pdp-section">
+          <p class="pdp-section-label">כמות</p>
+          <div class="pdp-qty">
+            <button type="button" class="pdp-qty-btn" data-action="dec" aria-label="הפחת">−</button>
+            <span class="pdp-qty-value" id="pdpQty">1</span>
+            <button type="button" class="pdp-qty-btn" data-action="inc" aria-label="הוסף">+</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary pdp-add" id="pdpAdd">הוסף לסל</button>
+        <p class="pdp-shipping-note">משלוח חינם · החזרה חינם עד 30 יום</p>
+
+        <details class="pdp-accordion" open>
+          <summary>פרטי מוצר</summary>
+          <ul class="pdp-details-list" id="pdpDetailsList"></ul>
+        </details>
+        <details class="pdp-accordion">
+          <summary>מידות והתאמה</summary>
+          <p class="pdp-accordion-body">
+            הגזרה oversized — מומלץ להזמין במידה הרגילה שלך לגזרה מושלמת, או במידה אחת קטנה יותר לגזרה צמודה יותר.
+            המידות מתאימות לגוף ישראלי סטנדרטי.
+          </p>
+        </details>
+        <details class="pdp-accordion">
+          <summary>משלוח והחזרות</summary>
+          <p class="pdp-accordion-body">
+            משלוח חינם בכל הארץ תוך 48 שעות. החזרה חינם עד 30 יום מיום הקבלה — בתנאי שהפריט במצב מקורי ועם התווית.
+          </p>
+        </details>
+      </section>
+    </div>
+
+    <section class="pdp-related" id="pdpRelated" hidden>
+      <h2 class="pdp-related-title">אולי תאהבו גם</h2>
+      <div class="pdp-related-grid" id="pdpRelatedGrid"></div>
+    </section>
+  </main>
+
+  <!-- ─── FOOTER (minimal) ─── -->
+  <footer class="footer-min">
+    <p class="footer-copyright">© 2026 OBSIZE. כל הזכויות שמורות.</p>
+    <a href="index.html" class="footer-link">חזרה לעמוד הבית ←</a>
+  </footer>
+
+  <!-- ─── CART DRAWER ─── -->
+  <div class="cart-backdrop" id="cartBackdrop" aria-hidden="true"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="עגלת קניות" aria-hidden="true">
+    <header class="cart-drawer-header">
+      <h2 class="cart-drawer-title">העגלה שלך</h2>
+      <button class="cart-drawer-close" id="cartClose" aria-label="סגור עגלה">&times;</button>
+    </header>
+    <div class="cart-empty" id="cartEmpty">
+      <p>העגלה שלך ריקה</p>
+      <span>הוסף פריטים כדי להתחיל</span>
+    </div>
+    <div class="cart-items" id="cartItems" hidden></div>
+    <footer class="cart-drawer-footer" id="cartFooter" hidden>
+      <div class="cart-subtotal">
+        <span>סה"כ ביניים</span>
+        <strong id="cartTotal">₪0</strong>
+      </div>
+      <p class="cart-shipping-note">משלוח יחושב בצ׳קאאוט</p>
+      <button class="btn btn-primary cart-checkout" id="cartCheckout">למעבר לתשלום</button>
+    </footer>
+  </aside>
+
+  <!-- ─── JS ─── -->
+  <script src="products.js"></script>
+  <script src="product.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>

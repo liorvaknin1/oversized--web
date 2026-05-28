@@ -1,6 +1,7 @@
     // ── Hero Parallax ──
     (function() {
       const hero = document.getElementById('hero');
+      if (!hero) return;
       const layers = hero.querySelectorAll('[data-parallax-speed]');
 
       // Mouse-move parallax (desktop only)
@@ -57,32 +58,39 @@
 
     // ── Navbar scroll opacity ──
     const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
+    if (navbar) {
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+    }
 
     // ── Mobile menu ──
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
-    hamburger.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('open');
+        hamburger.classList.toggle('open', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+    }
 
     function closeMobileMenu() {
+      if (!mobileMenu) return;
       mobileMenu.classList.remove('open');
       hamburger.classList.remove('open');
       document.body.style.overflow = '';
     }
 
     // Close mobile menu on outside click
-    document.addEventListener('click', (e) => {
-      if (!navbar.contains(e.target) && !mobileMenu.contains(e.target)) {
-        closeMobileMenu();
-      }
-    });
+    if (navbar && mobileMenu) {
+      document.addEventListener('click', (e) => {
+        if (!navbar.contains(e.target) && !mobileMenu.contains(e.target)) {
+          closeMobileMenu();
+        }
+      });
+    }
 
     // ── Scroll reveal ──
     const revealEls = document.querySelectorAll('.reveal');
@@ -158,6 +166,8 @@
       const footerEl = document.getElementById('cartFooter');
       const totalEl = document.getElementById('cartTotal');
       const checkoutBtn = document.getElementById('cartCheckout');
+
+      if (!drawer || !backdrop || !toggleBtn || !itemsEl) return;
 
       let items = loadCart();
 
@@ -356,9 +366,28 @@
         else if (action === 'remove') removeItem(key);
       });
 
-      checkoutBtn.addEventListener('click', () => {
-        showToast('צ׳קאאוט יתווסף בקרוב');
-      });
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+          showToast('צ׳קאאוט יתווסף בקרוב');
+        });
+      }
 
       render();
+
+      // Public API for other pages (e.g. product.js)
+      window.OBSIZE_CART = {
+        add: (item) => { addItem(item); showToast('נוסף לעגלה'); },
+        open: openDrawer,
+        close: closeDrawer,
+      };
     })();
+
+    // ── Product card navigation (homepage) ──
+    document.querySelectorAll('.product-card[data-product-id]').forEach(card => {
+      card.addEventListener('click', (e) => {
+        // Don't navigate if user clicked an interactive element
+        if (e.target.closest('button, a, .color-dot, .add-to-cart-btn')) return;
+        const id = card.dataset.productId;
+        if (id) window.location.href = `product.html?id=${encodeURIComponent(id)}`;
+      });
+    });
