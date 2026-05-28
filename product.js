@@ -42,6 +42,54 @@
   document.getElementById('pdpPrice').textContent = formatPrice(product.price);
   document.getElementById('pdpDescription').textContent = product.description;
 
+  // ── SEO meta tags ──
+  const BASE_URL = 'https://obsize.co.il';
+  const productUrl = `${BASE_URL}/product.html?id=${encodeURIComponent(product.id)}`;
+  const productImageUrl = product.images && product.images[0]
+    ? `${BASE_URL}/${encodeURI(product.images[0])}`
+    : `${BASE_URL}/favicon.svg`;
+  const shortDesc = product.description.length > 160
+    ? product.description.slice(0, 157) + '…'
+    : product.description;
+  const seoTitle = `${product.name} — OBSIZE`;
+
+  const setMeta = (id, attr, value) => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute(attr, value);
+  };
+  setMeta('metaDescription', 'content', shortDesc);
+  setMeta('metaCanonical', 'href', productUrl);
+  setMeta('metaOgTitle', 'content', seoTitle);
+  setMeta('metaOgDescription', 'content', shortDesc);
+  setMeta('metaOgUrl', 'content', productUrl);
+  setMeta('metaOgImage', 'content', productImageUrl);
+  setMeta('metaTwTitle', 'content', seoTitle);
+  setMeta('metaTwDescription', 'content', shortDesc);
+  setMeta('metaTwImage', 'content', productImageUrl);
+
+  // Schema.org Product JSON-LD
+  const hasAvailableSize = product.sizes.some(s => !s.soldOut);
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: productImageUrl,
+    brand: { '@type': 'Brand', name: 'OBSIZE' },
+    sku: product.id,
+    offers: {
+      '@type': 'Offer',
+      url: productUrl,
+      priceCurrency: 'ILS',
+      price: product.price,
+      availability: hasAvailableSize
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+    },
+  };
+  const ldScript = document.getElementById('productJsonLd');
+  if (ldScript) ldScript.textContent = JSON.stringify(jsonLd);
+
   // Main image / placeholder
   const mainImage = document.getElementById('pdpMainImage');
   if (product.images && product.images.length > 0) {
