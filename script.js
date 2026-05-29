@@ -1,3 +1,61 @@
+    // ── Render product grid from catalog ──
+    (function() {
+      const grid = document.getElementById('productsGrid');
+      if (!grid || !window.PRODUCTS) return;
+
+      const SHIRT_SVG = '<svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white"><path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/></svg>';
+
+      const escapeHTML = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+      const formatPrice = (v) => `₪${v.toLocaleString('he-IL')}`;
+
+      grid.innerHTML = Object.values(window.PRODUCTS).map((p, i) => {
+        const imgHTML = p.images && p.images[0]
+          ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />`
+          : SHIRT_SVG;
+
+        const colorsHTML = p.colors.map(c => {
+          const border = c.border ? `border-color:${c.border};` : '';
+          return `<div class="color-dot" style="background:${c.hex};${border}" title="${escapeHTML(c.name)}"></div>`;
+        }).join('');
+
+        const sizesHTML = p.sizes.map(s => {
+          const cls = ['size-btn'];
+          if (s.soldOut) cls.push('sold-out');
+          else if (s.label === p.defaultSize) cls.push('active');
+          return `<button class="${cls.join(' ')}">${escapeHTML(s.label)}</button>`;
+        }).join('');
+
+        const dataAttrs = [
+          `data-product-id="${escapeHTML(p.id)}"`,
+          `data-product-name="${escapeHTML(p.name)}"`,
+          `data-product-price="${p.price}"`,
+          p.images && p.images[0] ? `data-product-image="${escapeHTML(p.images[0])}"` : '',
+        ].filter(Boolean).join(' ');
+
+        const delayClass = `reveal-delay-${(i % 4) + 1}`;
+
+        return `
+          <div class="product-card reveal ${delayClass}" ${dataAttrs}>
+            <div class="product-img">
+              ${imgHTML}
+              <div class="product-img-overlay">
+                <button class="btn btn-primary add-to-cart-btn">הוסף לסל</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <p class="product-tag">${escapeHTML(p.tag || '')}</p>
+              <h3 class="product-name">${escapeHTML(p.name)}</h3>
+              <p class="product-price">${formatPrice(p.price)}</p>
+              <div class="product-colors">${colorsHTML}</div>
+              <div class="product-sizes">${sizesHTML}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    })();
+
     // ── Hero Parallax ──
     (function() {
       const hero = document.getElementById('hero');
