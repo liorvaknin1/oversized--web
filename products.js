@@ -83,6 +83,33 @@ const PRODUCTS = {
       'סדרה מוגבלת — 200 יחידות',
     ],
   },
+  'bloom': {
+    id: 'bloom',
+    name: 'BLOOM',
+    tag: 'Hero Drop',
+    price: 169,
+    description: 'הפריט שהשיק את הקו — חולצת oversized עם הדפס BLOOM בלעדי. גזרה drop shoulder נדיבה, בד 250 גרם, הדפסה ישירה לבד שמחזיקה גם אחרי עשרות כביסות.',
+    images: ['העיצוב הייחודי של _BLOOM_.png'],
+    colors: [
+      { name: 'לבן', hex: '#fff' },
+      { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
+    ],
+    sizes: [
+      { label: 'S' },
+      { label: 'M' },
+      { label: 'L' },
+      { label: 'XL' },
+      { label: 'XXL' },
+    ],
+    defaultSize: 'L',
+    details: [
+      '100% כותנה פרמיום, 250 גרם/מ"ר',
+      'הדפסה ישירה לבד (DTG) באיכות גבוהה',
+      'גזרת drop shoulder oversized',
+      'כביסה הפוכה ב-30°C',
+      'מוצר ההשקה של המותג',
+    ],
+  },
   'sakur': {
     id: 'sakur',
     name: 'Sakur',

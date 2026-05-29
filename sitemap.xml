@@ -21,6 +21,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://obsize.co.il/product.html?id=bloom</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://obsize.co.il/product.html?id=sakur</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
