@@ -6,27 +6,32 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://obsize.com/product.html?id=essential-tee</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://obsize.com/product.html?id=heavy-drop</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://obsize.com/product.html?id=washed-boxy</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://obsize.com/product.html?id=bloom</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://obsize.com/product.html?id=sakur</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://obsize.com/product.html?id=paris</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://obsize.com/product.html?id=lotus</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://obsize.com/product.html?id=eucalyptus</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://obsize.com/product.html?id=flamingo</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
