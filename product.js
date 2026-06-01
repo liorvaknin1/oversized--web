@@ -43,7 +43,7 @@
   document.getElementById('pdpDescription').textContent = product.description;
 
   // ── SEO meta tags ──
-  const BASE_URL = 'https://obsize.co.il';
+  const BASE_URL = 'https://obsize.com';
   const productUrl = `${BASE_URL}/product.html?id=${encodeURIComponent(product.id)}`;
   const productImageUrl = product.images && product.images[0]
     ? `${BASE_URL}/${encodeURI(product.images[0])}`
