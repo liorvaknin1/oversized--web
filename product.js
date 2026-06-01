@@ -101,6 +101,11 @@
   const ldScript = document.getElementById('productJsonLd');
   if (ldScript) ldScript.textContent = JSON.stringify(jsonLd);
 
+  // Analytics: viewing a product page is a view_item event
+  if (window.OBSIZE_ANALYTICS) {
+    window.OBSIZE_ANALYTICS.viewItem({ id: product.id, name: product.name, price: product.price });
+  }
+
   // Main image / placeholder
   const mainImage = document.getElementById('pdpMainImage');
   if (product.images && product.images.length > 0) {

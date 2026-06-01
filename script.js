@@ -337,6 +337,7 @@
         }
         saveCart();
         render();
+        if (window.OBSIZE_ANALYTICS) window.OBSIZE_ANALYTICS.addToCart(newItem);
       }
 
       function updateQty(key, delta) {

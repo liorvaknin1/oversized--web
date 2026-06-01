@@ -71,6 +71,9 @@
   totalEl.textContent = formatPrice(subtotal);
   submitAmount.textContent = `· ${formatPrice(subtotal)}`;
 
+  // Analytics: reaching checkout with items is a begin_checkout event
+  if (window.OBSIZE_ANALYTICS) window.OBSIZE_ANALYTICS.beginCheckout(items);
+
   // ── Card number / expiry input formatting ──
   const cardInput = document.getElementById('cardNumber');
   cardInput.addEventListener('input', () => {
@@ -187,6 +190,9 @@
     document.getElementById('orderNumber').textContent = orderNumber;
     document.getElementById('orderEmail').textContent = email;
     document.getElementById('orderTotal').textContent = formatPrice(subtotal);
+
+    // Analytics: completed order is a purchase event (fire before clearing cart)
+    if (window.OBSIZE_ANALYTICS) window.OBSIZE_ANALYTICS.purchase(orderNumber, items);
 
     // Clear cart
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
