@@ -90,6 +90,7 @@ const PRODUCTS = {
     price: 169,
     description: 'הפריט שהשיק את הקו — חולצת oversized עם הדפס BLOOM בלעדי. גזרה drop shoulder נדיבה, בד 250 גרם, הדפסה ישירה לבד שמחזיקה גם אחרי עשרות כביסות.',
     images: ['העיצוב הייחודי של _BLOOM_.png'],
+    ogImage: 'og-bloom.png',
     colors: [
       { name: 'לבן', hex: '#fff' },
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
@@ -117,6 +118,7 @@ const PRODUCTS = {
     price: 150,
     description: 'הדפס בלעדי בהשראת עץ הסאקורה. עיצוב נקי בחזית ועיצוב מלא בגב. בד רך עם הדפס דיגיטלי באיכות גבוהה שלא נסדק.',
     images: ['עיצוב סאקורה על חולצה שחורה.png'],
+    ogImage: 'og-sakur.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
     ],

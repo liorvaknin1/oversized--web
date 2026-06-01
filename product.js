@@ -45,13 +45,17 @@
   // ── SEO meta tags ──
   const BASE_URL = 'https://obsize.com';
   const productUrl = `${BASE_URL}/product.html?id=${encodeURIComponent(product.id)}`;
-  const productImageUrl = product.images && product.images[0]
-    ? `${BASE_URL}/${encodeURI(product.images[0])}`
-    : `${BASE_URL}/favicon.svg`;
+  // Social share image: a 1200x630 branded OG card per product when one exists,
+  // otherwise the generic site card. Never the raw portrait photo — WhatsApp and
+  // Facebook need a landscape 1.91:1 image to render the link preview correctly.
+  const ogImageUrl = product.ogImage
+    ? `${BASE_URL}/${product.ogImage}`
+    : `${BASE_URL}/og-image.png`;
   const shortDesc = product.description.length > 160
     ? product.description.slice(0, 157) + '…'
     : product.description;
   const seoTitle = `${product.name} — OBSIZE`;
+  const ogAlt = `OBSIZE — ${product.name}`;
 
   const setMeta = (id, attr, value) => {
     const el = document.getElementById(id);
@@ -62,19 +66,26 @@
   setMeta('metaOgTitle', 'content', seoTitle);
   setMeta('metaOgDescription', 'content', shortDesc);
   setMeta('metaOgUrl', 'content', productUrl);
-  setMeta('metaOgImage', 'content', productImageUrl);
+  setMeta('metaOgImage', 'content', ogImageUrl);
+  setMeta('metaOgImageSecure', 'content', ogImageUrl);
+  setMeta('metaOgImageAlt', 'content', ogAlt);
   setMeta('metaTwTitle', 'content', seoTitle);
   setMeta('metaTwDescription', 'content', shortDesc);
-  setMeta('metaTwImage', 'content', productImageUrl);
+  setMeta('metaTwImage', 'content', ogImageUrl);
+  setMeta('metaTwImageAlt', 'content', ogAlt);
 
-  // Schema.org Product JSON-LD
+  // Schema.org Product JSON-LD — prefers the real product photo (Google product
+  // rich results accept any aspect ratio), falling back to the branded OG card.
+  const schemaImageUrl = product.images && product.images[0]
+    ? `${BASE_URL}/${encodeURI(product.images[0])}`
+    : ogImageUrl;
   const hasAvailableSize = product.sizes.some(s => !s.soldOut);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: productImageUrl,
+    image: schemaImageUrl,
     brand: { '@type': 'Brand', name: 'OBSIZE' },
     sku: product.id,
     offers: {
