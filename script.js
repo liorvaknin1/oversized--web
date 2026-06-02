@@ -317,6 +317,8 @@
         drawer.classList.add('open');
         backdrop.classList.add('open');
         drawer.setAttribute('aria-hidden', 'false');
+        // Re-enable interaction + screen-reader access while open
+        drawer.removeAttribute('inert');
         document.body.style.overflow = 'hidden';
       }
 
@@ -324,6 +326,9 @@
         drawer.classList.remove('open');
         backdrop.classList.remove('open');
         drawer.setAttribute('aria-hidden', 'true');
+        // inert removes the off-screen drawer's controls from the tab order
+        // and the accessibility tree while it is closed
+        drawer.setAttribute('inert', '');
         document.body.style.overflow = '';
       }
 

@@ -882,7 +882,7 @@ html { scroll-behavior: smooth; }
     }
     .footer-tagline {
       font-size: 0.82rem;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.55);
       max-width: 240px;
       line-height: 1.6;
     }
@@ -892,7 +892,7 @@ html { scroll-behavior: smooth; }
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.55);
       margin-bottom: 20px;
     }
     .footer-links {
@@ -917,7 +917,7 @@ html { scroll-behavior: smooth; }
 
     .footer-copyright {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.55);
     }
 
     .social-icons {
@@ -1706,7 +1706,7 @@ html { scroll-behavior: smooth; }
     }
     .footer-min .footer-copyright {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.55);
     }
     .footer-min .footer-link {
       font-size: 0.8rem;
@@ -1949,7 +1949,7 @@ html { scroll-behavior: smooth; }
     }
     .cart-empty span {
       font-size: 0.85rem;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.55);
     }
 
     .cart-items {
