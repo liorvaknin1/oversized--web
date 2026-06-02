@@ -1236,6 +1236,7 @@ html { scroll-behavior: smooth; }
       gap: 18px;
       padding: 0 24px;
     }
+    .checkout-empty[hidden] { display: none; }
     .checkout-empty h1 { font-size: 1.8rem; font-weight: 900; }
     .checkout-empty p { color: rgba(255,255,255,0.6); }
 
@@ -1409,6 +1410,7 @@ html { scroll-behavior: smooth; }
       gap: 12px;
       margin-top: 16px;
     }
+    .pdp-thumbnails[hidden] { display: none; }
 
     /* Details panel */
     .pdp-details {
@@ -1942,6 +1944,7 @@ html { scroll-behavior: smooth; }
       padding: 40px;
       text-align: center;
     }
+    .cart-empty[hidden] { display: none; }
     .cart-empty p {
       font-size: 1rem;
       font-weight: 700;
