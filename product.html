@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title id="pageTitle">OBSIZE — מוצר</title>
   <meta name="description" id="metaDescription" content="חולצת oversized מאת OBSIZE — בד פרמיום, עיצוב נקי, משלוח חינם." />
   <meta name="theme-color" content="#000000" />
@@ -33,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 
   <!-- Schema.org Product (populated by product.js) -->
   <script type="application/ld+json" id="productJsonLd"></script>
@@ -65,10 +67,10 @@
   </nav>
 
   <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html#products" onclick="closeMobileMenu()">קולקציה</a>
-    <a href="index.html#why" onclick="closeMobileMenu()">אודות</a>
-    <a href="index.html#testimonials" onclick="closeMobileMenu()">ביקורות</a>
-    <a href="index.html#products" class="btn btn-primary" onclick="closeMobileMenu()">לקולקציה</a>
+    <a href="index.html#products">קולקציה</a>
+    <a href="index.html#why">אודות</a>
+    <a href="index.html#testimonials">ביקורות</a>
+    <a href="index.html#products" class="btn btn-primary">לקולקציה</a>
   </div>
 
   <!-- ─── PDP ─── -->
@@ -174,9 +176,9 @@
   </aside>
 
   <!-- ─── JS ─── -->
-  <script src="analytics.js?v=11"></script>
-  <script src="products.js?v=11"></script>
-  <script src="product.js?v=11" defer></script>
-  <script src="script.js?v=11" defer></script>
+  <script src="analytics.js?v=12"></script>
+  <script src="products.js?v=12"></script>
+  <script src="product.js?v=12" defer></script>
+  <script src="script.js?v=12" defer></script>
 </body>
 </html>

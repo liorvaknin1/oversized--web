@@ -141,6 +141,15 @@
       document.body.style.overflow = '';
     }
 
+    // Close the mobile menu when any of its links is clicked.
+    // (Wired here instead of inline onclick handlers so the CSP can forbid
+    // inline scripts entirely.)
+    if (mobileMenu) {
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+    }
+
     // Close mobile menu on outside click
     if (navbar && mobileMenu) {
       document.addEventListener('click', (e) => {

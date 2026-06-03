@@ -1,0 +1,7 @@
+# OBSIZE — security contact (RFC 9116)
+# If you found a security vulnerability, please report it responsibly.
+
+Contact: mailto:security@obsize.com
+Expires: 2027-06-02T00:00:00.000Z
+Preferred-Languages: he, en
+Canonical: https://obsize.com/.well-known/security.txt
