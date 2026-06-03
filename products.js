@@ -114,7 +114,7 @@ const PRODUCTS = {
     tag: 'Hero Drop',
     price: 169,
     description: 'הפריט שהשיק את הקו — חולצת oversized עם הדפס BLOOM בלעדי. גזרה drop shoulder נדיבה, בד 250 גרם, הדפסה ישירה לבד שמחזיקה גם אחרי עשרות כביסות.',
-    images: ['העיצוב הייחודי של _BLOOM_.png'],
+    images: ['bloom.jpg'],
     ogImage: 'og-bloom.png',
     colors: [
       { name: 'לבן', hex: '#fff' },
