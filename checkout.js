@@ -1,5 +1,17 @@
 // Checkout page: validates form, renders order summary, simulates order placement.
 (function() {
+  // ───────────────────────────────────────────────────────────────────────
+  // Order notifications via Web3Forms (free, no backend).
+  // SETUP: get a free access key at https://web3forms.com (enter the email
+  // address where you want to receive orders) and paste it below. Until it is
+  // set, orders still complete on screen but no email is sent.
+  // The key is a public submit key — safe to keep in client code; it only
+  // delivers to the email you registered.
+  //
+  // NOTE: credit-card fields are deliberately NEVER sent here.
+  // ───────────────────────────────────────────────────────────────────────
+  const WEB3FORMS_ACCESS_KEY = '';
+
   const STORAGE_KEY = 'obsize_cart_v1';
   const SHIRT_SVG = '<svg viewBox="0 0 200 240" aria-hidden="true"><path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/></svg>';
 
@@ -182,13 +194,26 @@
 
   function placeOrder() {
     const orderNumber = generateOrderNumber();
-    const email = document.getElementById('email').value.trim();
+    const val = (id) => (document.getElementById(id)?.value || '').trim();
+    const customer = {
+      email: val('email'),
+      phone: val('phone'),
+      firstName: val('firstName'),
+      lastName: val('lastName'),
+      address: val('address'),
+      city: val('city'),
+      zip: val('zip'),
+    };
+
+    // Send the order to the shop owner by email (no card data included).
+    // Fire before clearing the cart; failures never block the confirmation.
+    sendOrderNotification(orderNumber, customer);
 
     // Show success view
     checkoutMain.hidden = true;
     successView.hidden = false;
     document.getElementById('orderNumber').textContent = orderNumber;
-    document.getElementById('orderEmail').textContent = email;
+    document.getElementById('orderEmail').textContent = customer.email;
     document.getElementById('orderTotal').textContent = formatPrice(subtotal);
 
     // Analytics: completed order is a purchase event (fire before clearing cart)
@@ -199,6 +224,48 @@
 
     // Scroll to top
     window.scrollTo(0, 0);
+  }
+
+  // Build a human-readable order and POST it to Web3Forms.
+  function sendOrderNotification(orderNumber, customer) {
+    if (!WEB3FORMS_ACCESS_KEY) return; // not configured yet — no-op
+
+    const lines = items.map(it => {
+      const meta = [it.size && `מידה ${it.size}`, it.color].filter(Boolean).join(' · ');
+      return `• ${it.name} (${meta}) ×${it.qty} — ${formatPrice(it.price * it.qty)}`;
+    }).join('\n');
+
+    const message =
+      `הזמנה חדשה ${orderNumber}\n\n` +
+      `— פריטים —\n${lines}\n\n` +
+      `סה"כ: ${formatPrice(subtotal)}\n\n` +
+      `— לקוח —\n` +
+      `שם: ${customer.firstName} ${customer.lastName}\n` +
+      `אימייל: ${customer.email}\n` +
+      `טלפון: ${customer.phone}\n` +
+      `כתובת: ${customer.address}, ${customer.city} ${customer.zip}`;
+
+    const payload = {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: `הזמנה חדשה ${orderNumber} — OBSIZE`,
+      from_name: 'OBSIZE Orders',
+      // structured fields (also shown in the Web3Forms dashboard/email)
+      order_number: orderNumber,
+      customer_name: `${customer.firstName} ${customer.lastName}`,
+      email: customer.email,
+      phone: customer.phone,
+      address: `${customer.address}, ${customer.city} ${customer.zip}`,
+      total: formatPrice(subtotal),
+      message,
+    };
+
+    try {
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch(() => { /* ignore network errors — order still confirmed on screen */ });
+    } catch (e) { /* ignore */ }
   }
 
   function generateOrderNumber() {
