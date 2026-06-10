@@ -10,7 +10,7 @@
   //
   // NOTE: credit-card fields are deliberately NEVER sent here.
   // ───────────────────────────────────────────────────────────────────────
-  const WEB3FORMS_ACCESS_KEY = '';
+  const WEB3FORMS_ACCESS_KEY = '4a44305b-2c8b-47c6-8a17-d873e3c84ee8';
 
   const STORAGE_KEY = 'obsize_cart_v1';
   const SHIRT_SVG = '<svg viewBox="0 0 200 240" aria-hidden="true"><path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/></svg>';
