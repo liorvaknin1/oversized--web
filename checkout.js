@@ -8,6 +8,10 @@
   // The key is a public submit key — safe to keep in client code; it only
   // delivers to the email you registered.
   //
+  // The destination email is NOT stored here (on purpose — this file is
+  // public). It is configured against this access key in the Web3Forms
+  // dashboard at https://web3forms.com — view or change the recipient there.
+  //
   // NOTE: credit-card fields are deliberately NEVER sent here.
   // ───────────────────────────────────────────────────────────────────────
   const WEB3FORMS_ACCESS_KEY = '4a44305b-2c8b-47c6-8a17-d873e3c84ee8';
