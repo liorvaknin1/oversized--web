@@ -12,7 +12,7 @@
 
       grid.innerHTML = Object.values(window.PRODUCTS).map((p, i) => {
         const imgHTML = p.images && p.images[0]
-          ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />`
+          ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />`
           : SHIRT_SVG;
 
         const colorsHTML = p.colors.map(c => {

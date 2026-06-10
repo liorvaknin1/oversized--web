@@ -232,7 +232,7 @@
     const relatedGrid = document.getElementById('pdpRelatedGrid');
     relatedGrid.innerHTML = related.map(p => {
       const img = p.images && p.images[0]
-        ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" />`
+        ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" loading="lazy" />`
         : SHIRT_SVG;
       return `
         <a href="product.html?id=${encodeURIComponent(p.id)}" class="pdp-related-card">

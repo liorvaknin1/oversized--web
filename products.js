@@ -142,7 +142,7 @@ const PRODUCTS = {
     tag: 'New Drop',
     price: 150,
     description: 'הדפס בלעדי בהשראת עץ הסאקורה. עיצוב נקי בחזית ועיצוב מלא בגב. בד רך עם הדפס דיגיטלי באיכות גבוהה שלא נסדק.',
-    images: ['עיצוב סאקורה על חולצה שחורה.png'],
+    images: ['sakur.jpg'],
     ogImage: 'og-sakur.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
