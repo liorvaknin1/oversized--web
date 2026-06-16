@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net; connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>OBSIZE — פחות רעש. יותר סטייל.</title>
   <meta name="description" content="חולצות oversized פרמיום מישראל. בד כותנה כבד, גזרה drop shoulder, עיצוב מינימליסטי. משלוח חינם תוך 48 שעות." />
@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=17" />
 
   <!-- Schema.org Organization -->
   <script type="application/ld+json">
@@ -59,106 +59,101 @@
 
 <body>
 
-  <!-- ─── NAV ─── -->
-  <nav id="navbar">
+  <!-- ─── HEADER ─── -->
+  <header id="navbar">
+    <nav class="nav-links" aria-label="ניווט ראשי">
+      <a href="#products">שופ</a>
+      <a href="#products">דרופ חדש</a>
+      <a href="#lookbook">לוקבוק</a>
+      <a href="#benefits">אודות</a>
+    </nav>
+
     <a href="#hero" class="nav-logo">OBSIZE</a>
-    <ul class="nav-links">
-      <li><a href="#products">קולקציה</a></li>
-      <li><a href="#why">אודות</a></li>
-      <li><a href="#testimonials">ביקורות</a></li>
-    </ul>
-    <div class="nav-end">
-      <button class="cart-toggle" id="cartToggle" aria-label="פתח עגלה">
+
+    <div class="nav-actions">
+      <button class="nav-icon" aria-label="חיפוש">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
+        </svg>
+      </button>
+      <button class="nav-icon" aria-label="חשבון">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/>
+        </svg>
+      </button>
+      <button class="nav-icon cart-toggle" id="cartToggle" aria-label="פתח עגלה">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M6 7h12l-1.4 9.8a2 2 0 0 1-2 1.7H9.4a2 2 0 0 1-2-1.7L6 7Z"/>
           <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
         </svg>
         <span class="cart-badge" id="cartBadge" hidden>0</span>
       </button>
-      <a href="#products" class="btn btn-primary nav-buy-btn">לקנייה</a>
       <button class="hamburger" id="hamburger" aria-label="תפריט">
         <span></span><span></span><span></span>
       </button>
     </div>
-  </nav>
+  </header>
 
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#products">קולקציה</a>
-    <a href="#why">אודות</a>
-    <a href="#testimonials">ביקורות</a>
+    <a href="#products">שופ</a>
+    <a href="#products">דרופ חדש</a>
+    <a href="#lookbook">לוקבוק</a>
+    <a href="#benefits">אודות</a>
     <a href="#products" class="btn btn-primary">לקנייה עכשיו</a>
   </div>
 
   <!-- ─── HERO ─── -->
   <section id="hero">
-    <!-- Parallax background layers -->
-    <div class="hero-ghost-text" data-parallax-speed="0.15">OBSIZE</div>
-    <div class="hero-glow hero-glow-1" data-parallax-speed="0.08"></div>
-    <div class="hero-glow hero-glow-2" data-parallax-speed="0.12"></div>
-    <div class="hero-orb hero-orb-1" data-parallax-speed="0.25"></div>
-    <div class="hero-orb hero-orb-2" data-parallax-speed="0.35"></div>
-    <div class="hero-orb hero-orb-3" data-parallax-speed="0.2"></div>
-    <div class="hero-orb hero-orb-4" data-parallax-speed="0.3"></div>
-    <div class="hero-orb hero-orb-5" data-parallax-speed="0.18"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
 
-    <div class="hero-content" data-parallax-speed="-0.06">
-      <div class="hero-tag reveal">obsessed with oversized</div>
+    <div class="hero-content">
+      <p class="hero-eyebrow reveal">NEW DROP — SS25</p>
       <h1 class="hero-title reveal reveal-delay-1">
-        פחות רעש.<br />
-        <span>יותר סטייל.</span>
+        נועד לבלוט.<br />
+        <span>עוצב לשבור כללים.</span>
       </h1>
       <p class="hero-sub reveal reveal-delay-2">
-        חולצות oversized שנועדו לנוח על הגוף, לא נגדו.
-        בד כבד. עיצוב נקי. פשוט עובד.
+        אופנת רחוב פרמיום לאלה שלא הולכים לפי הכללים.
       </p>
       <div class="hero-btns reveal reveal-delay-3">
-        <a href="#products" class="btn btn-primary">לקנייה עכשיו</a>
-        <a href="#products" class="btn btn-outline">לקולקציה</a>
+        <a href="#products" class="btn btn-primary">שופ הדרופ החדש <span class="btn-arrow" aria-hidden="true">←</span></a>
+        <a href="#lookbook" class="btn btn-outline">ללוקבוק</a>
       </div>
-      <div class="hero-badge reveal reveal-delay-4">
-        <div class="hero-badge-dot"></div>
-        <span>In stock — משלוח תוך 48 שעות</span>
+      <a href="#products" class="hero-scroll reveal reveal-delay-4" aria-label="גלול אל הקולקציה">
+        <span>גלול למטה</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-visual reveal reveal-delay-2">
+      <!-- Placeholder until a real model photo exists: set the background-image of
+           .hero-img (or drop in <img>) using data-img, then remove .is-placeholder. -->
+      <div class="hero-img is-placeholder" data-img="hero-model.jpg" role="img" aria-label="דוגמן לובש חולצת OBSIZE oversized">
+        <span class="placeholder-label">תמונת דוגמן — DROP 01</span>
       </div>
     </div>
 
-    <div class="hero-visual reveal reveal-delay-2" data-parallax-speed="-0.1">
-      <div class="hero-img-wrap">
-        <a href="product.html?id=bloom" class="hero-placeholder" aria-label="לצפייה במוצר BLOOM">
-          <img src="bloom.jpg" alt="חולצת oversized שחורה עם הדפס BLOOM — זר ורדים ופרחים בגב" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />
-        </a>
-        <a href="product.html?id=bloom" class="hero-floating-tag">
-          BLOOM
-          <span>₪169</span>
-        </a>
-      </div>
-    </div>
+    <div class="hero-side" aria-hidden="true">OBSIZE — OVERSIZED — STREETWEAR — DROP 01</div>
   </section>
 
-  <!-- ─── TICKER ─── -->
+  <!-- ─── MARQUEE ─── -->
   <div id="ticker" aria-hidden="true">
     <div class="ticker-track">
       <!-- Duplicated for seamless loop -->
-      <div class="ticker-item"><span>משלוח חינם בכל הארץ</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>1,200+ לקוחות מרוצים</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>100% כותנה פרמיום</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>משלוח תוך 48 שעות</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>החזרה חינם עד 30 יום</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>עיצוב מינימליסטי נצחי</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>משלוח חינם בכל הארץ</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>1,200+ לקוחות מרוצים</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>100% כותנה פרמיום</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>משלוח תוך 48 שעות</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>החזרה חינם עד 30 יום</span><span class="ticker-sep"></span></div>
-      <div class="ticker-item"><span>עיצוב מינימליסטי נצחי</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>OBSIZE</span><span class="ticker-sep"></span><span>OVERSIZED</span><span class="ticker-sep"></span><span>STREETWEAR</span><span class="ticker-sep"></span><span>DROP 01</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>OBSIZE</span><span class="ticker-sep"></span><span>OVERSIZED</span><span class="ticker-sep"></span><span>STREETWEAR</span><span class="ticker-sep"></span><span>DROP 01</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>OBSIZE</span><span class="ticker-sep"></span><span>OVERSIZED</span><span class="ticker-sep"></span><span>STREETWEAR</span><span class="ticker-sep"></span><span>DROP 01</span><span class="ticker-sep"></span></div>
+      <div class="ticker-item"><span>OBSIZE</span><span class="ticker-sep"></span><span>OVERSIZED</span><span class="ticker-sep"></span><span>STREETWEAR</span><span class="ticker-sep"></span><span>DROP 01</span><span class="ticker-sep"></span></div>
     </div>
   </div>
 
-  <!-- ─── PRODUCTS ─── -->
+  <!-- ─── NEW DROP (product grid) ─── -->
   <section id="products">
     <div class="section-header reveal">
       <div>
-        <p class="section-label">הקולקציה שלנו</p>
-        <h2 class="section-title">נבחרות העונה</h2>
+        <p class="section-label">NEW DROP</p>
+        <h2 class="section-title">הדרופ החדש</h2>
+        <p class="section-sub">הקולקציה האחרונה של חולצות ה-oversized שלנו.</p>
       </div>
       <a href="#products" class="section-link">כל הפריטים ←</a>
     </div>
@@ -166,185 +161,123 @@
     <div class="products-grid" id="productsGrid"></div>
   </section>
 
-  <!-- ─── WHY US ─── -->
-  <section id="why">
-    <div class="section-header reveal">
-      <div>
-        <p class="section-label">למה לבחור בנו</p>
-        <h2 class="section-title">הסטנדרט שלנו</h2>
+  <!-- ─── BENEFITS BAR ─── -->
+  <section id="benefits" class="benefits" aria-label="היתרונות שלנו">
+    <div class="benefit reveal reveal-delay-1">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.6 6.6L21 9.2l-5 4.6 1.4 6.7L12 17l-5.4 3.5L8 13.8l-5-4.6 6.4-.6L12 2z"/></svg>
       </div>
+      <h3 class="benefit-title">איכות פרמיום</h3>
+      <p class="benefit-text">בד כבד 100% כותנה שמחזיק שנים.</p>
     </div>
-
-    <div class="why-grid">
-      <div class="why-item reveal reveal-delay-1">
-        <div class="why-icon">
-          <!-- fabric icon -->
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5"/>
-            <path d="M2 12l10 5 10-5"/>
-          </svg>
-        </div>
-        <h3 class="why-title">בד פרמיום</h3>
-        <p class="why-text">
-          100% כותנה כבדה 280 גרם. מרגיש יקר ביד ועל הגוף.
-          שומר על הצורה גם אחרי עשרות כביסות.
-        </p>
+    <div class="benefit reveal reveal-delay-2">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7L12 3 4 7v10l8 4 8-4V7z"/><path d="M4 7l8 4 8-4M12 21V11"/></svg>
       </div>
-
-      <div class="why-item reveal reveal-delay-2">
-        <div class="why-icon">
-          <!-- oversized cut icon -->
-          <svg viewBox="0 0 24 24">
-            <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/>
-          </svg>
-        </div>
-        <h3 class="why-title">חיתוך Oversized</h3>
-        <p class="why-text">
-          כתפיים נפולות, גזרה רחבה שיושבת בדיוק כמו שצריך.
-          לא גדול מדי, לא קטן — פיט שנראה מכוון.
-        </p>
+      <h3 class="benefit-title">דרופים מוגבלים</h3>
+      <p class="benefit-text">כמויות מוגבלות בכל דרופ — מי שמספיק, מספיק.</p>
+    </div>
+    <div class="benefit reveal reveal-delay-3">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg>
       </div>
-
-      <div class="why-item reveal reveal-delay-3">
-        <div class="why-icon">
-          <!-- timeless icon -->
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 6v6l4 2"/>
-          </svg>
-        </div>
-        <h3 class="why-title">עיצוב נצחי</h3>
-        <p class="why-text">
-          ללא לוגואים ענקיים, ללא טרנדים חולפים.
-          פריטים שתלבש היום, בעוד שנה, ובעוד שלוש.
-        </p>
+      <h3 class="benefit-title">משלוח לכל העולם</h3>
+      <p class="benefit-text">משלוח מהיר עד הבית, בארץ ובעולם.</p>
+    </div>
+    <div class="benefit reveal reveal-delay-4">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
       </div>
+      <h3 class="benefit-title">תשלום מאובטח</h3>
+      <p class="benefit-text">קנייה בטוחה ומוצפנת מקצה לקצה.</p>
     </div>
   </section>
 
-  <!-- ─── TESTIMONIALS ─── -->
-  <section id="testimonials">
+  <!-- ─── LOOKBOOK ─── -->
+  <section id="lookbook">
     <div class="section-header reveal">
       <div>
-        <p class="section-label">מה אומרים עלינו</p>
-        <h2 class="section-title">לקוחות מדברים</h2>
+        <p class="section-label">LOOKBOOK</p>
+        <h2 class="section-title">לוקבוק</h2>
+        <p class="section-sub">אנשים אמיתיים. גזרות אמיתיות. עוצב לנועזים.</p>
       </div>
+      <a href="#lookbook" class="section-link">לכל הלוקבוק ←</a>
     </div>
 
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal reveal-delay-1">
-        <div class="stars">
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-        </div>
-        <p class="testimonial-text">לבשתי את החולצה ביום הראשון שקיבלתי אותה ולא הורדתי שבוע. הבד הכבד עושה את כל ההבדל — מרגיש כמו מותג אירופאי שעולה פי שלוש.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">ד</div>
-          <div>
-            <p class="author-name">דניאל כהן</p>
-            <p class="author-handle">תל אביב</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-2">
-        <div class="stars">
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-        </div>
-        <p class="testimonial-text">הזמנתי שלוש בבת אחת. הגיעו תוך יומיים. הגזרה מושלמת — לא oversized באופן מגוחך, פשוט יושבת נכון. מאז כולם שואלים איפה קניתי.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">מ</div>
-          <div>
-            <p class="author-name">מיכל לוי</p>
-            <p class="author-handle">ירושלים</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-3">
-        <div class="stars">
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <svg class="star dim" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-        </div>
-        <p class="testimonial-text">כבר רכשתי מברנדים אחרים שיושבים בחו"ל. זה אותו הדבר, פשוט פה בארץ ובמחיר סביר. איכות האריגה מדהימה. מומלץ בחום.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">א</div>
-          <div>
-            <p class="author-name">אור ברקוביץ'</p>
-            <p class="author-handle">חיפה</p>
-          </div>
-        </div>
-      </div>
+    <!-- Placeholder tiles until real lookbook photos exist: set each .lookbook-tile
+         background-image via data-img and remove .is-placeholder. -->
+    <div class="lookbook-grid">
+      <div class="lookbook-tile is-placeholder reveal reveal-delay-1" data-img="lookbook-1.jpg" role="img" aria-label="לוק 01"><span class="placeholder-label">LOOK 01</span></div>
+      <div class="lookbook-tile is-placeholder reveal reveal-delay-2" data-img="lookbook-2.jpg" role="img" aria-label="לוק 02"><span class="placeholder-label">LOOK 02</span></div>
+      <div class="lookbook-tile is-placeholder reveal reveal-delay-3" data-img="lookbook-3.jpg" role="img" aria-label="לוק 03"><span class="placeholder-label">LOOK 03</span></div>
+      <div class="lookbook-tile is-placeholder reveal reveal-delay-4" data-img="lookbook-4.jpg" role="img" aria-label="לוק 04"><span class="placeholder-label">LOOK 04</span></div>
     </div>
-  </section>
-
-  <!-- ─── FINAL CTA ─── -->
-  <section id="cta-final">
-    <p class="cta-final-label reveal">obsessed with oversized</p>
-    <h2 class="cta-final-title reveal reveal-delay-1">מוכן לשדרג את הארון שלך?</h2>
-    <p class="cta-final-sub reveal reveal-delay-2">בחר צבע. בחר מידה. קבל בבית תוך יומיים.</p>
-    <div class="reveal reveal-delay-3">
-      <a href="#products" class="btn btn-primary" style="font-size:1rem; padding:18px 48px;">להזמנה עכשיו</a>
-    </div>
-    <p class="cta-final-fine reveal reveal-delay-4">משלוח חינם · החזרה חינם עד 30 יום · תשלום מאובטח</p>
   </section>
 
   <!-- ─── FOOTER ─── -->
   <footer>
     <div class="footer-top">
-      <div>
+      <div class="footer-brand">
         <p class="footer-logo">OBSIZE</p>
-        <p class="footer-tagline">obsessed with oversized.<br/>חולצות oversized פרמיום מישראל.</p>
+        <p class="footer-tagline">אין כללים. רק סייז.<br/>זאת הגישה.</p>
+        <div class="social-icons">
+          <a href="https://www.instagram.com/obsize" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@obsize" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok">
+            <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+          <a href="mailto:hello@obsize.com" class="social-icon" aria-label="אימייל">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          </a>
+        </div>
       </div>
-      <div>
-        <p class="footer-col-title">מידע ותקנון</p>
+
+      <div class="footer-col">
+        <p class="footer-col-title">שופ</p>
         <ul class="footer-links">
+          <li><a href="#products">כל המוצרים</a></li>
+          <li><a href="#products">דרופ חדש</a></li>
+          <li><a href="#lookbook">לוקבוק</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-col-title">מידע</p>
+        <ul class="footer-links">
+          <li><a href="#benefits">אודות OBSIZE</a></li>
+          <li><a href="terms.html">משלוחים והחזרות</a></li>
           <li><a href="terms.html">תקנון ותנאי שימוש</a></li>
-          <li><a href="privacy.html">מדיניות פרטיות</a></li>
           <li><a href="accessibility.html">הצהרת נגישות</a></li>
-          <li><a href="terms.html">מדיניות החזרות</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-col-title">תמיכה</p>
+        <ul class="footer-links">
+          <li><a href="privacy.html">מדיניות פרטיות</a></li>
           <li><a href="#" data-cookie-settings>ניהול עוגיות</a></li>
         </ul>
       </div>
-      <div>
-        <p class="footer-col-title">ניווט</p>
-        <ul class="footer-links">
-          <li><a href="#products">קולקציה</a></li>
-          <li><a href="#why">אודות</a></li>
-          <li><a href="#testimonials">ביקורות</a></li>
-        </ul>
+
+      <div class="footer-newsletter">
+        <p class="footer-col-title">הצטרפו למשפחת OBSIZE</p>
+        <p class="newsletter-sub">קבלו 10% הנחה על ההזמנה הראשונה.</p>
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <input type="email" id="newsletterEmail" name="email" required placeholder="כתובת אימייל" aria-label="כתובת אימייל" />
+          <button type="submit" class="newsletter-btn" aria-label="הרשמה לניוזלטר">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          </button>
+        </form>
+        <p class="newsletter-msg" id="newsletterMsg" role="status" aria-live="polite" hidden></p>
       </div>
     </div>
 
     <div class="footer-bottom">
       <p class="footer-copyright">© 2026 OBSIZE. כל הזכויות שמורות.</p>
-      <div class="social-icons">
-        <!-- Instagram -->
-        <a href="https://www.instagram.com/obsize" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <!-- TikTok -->
-        <a href="https://www.tiktok.com/@obsize" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok">
-          <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-        </a>
-        <!-- WhatsApp -->
-        <a href="#" class="social-icon" aria-label="WhatsApp">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </a>
-      </div>
     </div>
   </footer>
+
 
   <!-- ─── CART DRAWER ─── -->
   <div class="cart-backdrop" id="cartBackdrop" aria-hidden="true"></div>
@@ -369,9 +302,9 @@
   </aside>
 
   <!-- ─── JS ─── -->
-  <script src="analytics.js?v=16"></script>
-  <script src="consent.js?v=16"></script>
-  <script src="products.js?v=16"></script>
-  <script src="script.js?v=16" defer></script>
+  <script src="analytics.js?v=17"></script>
+  <script src="consent.js?v=17"></script>
+  <script src="products.js?v=17"></script>
+  <script src="script.js?v=17" defer></script>
 </body>
 </html>
