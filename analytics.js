@@ -28,31 +28,41 @@
     return typeof v === 'string' && v.trim().length > 0;
   }
 
-  // ── Load Google Analytics 4 ──
-  if (gaEnabled) {
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(CONFIG.GA4_ID);
-    document.head.appendChild(s);
+  var loaded = false;
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', CONFIG.GA4_ID);
-  }
+  // Injects the GA4 and Meta Pixel scripts. Called ONLY after the visitor
+  // grants cookie consent (see consent.js) — never on page load. Safe to call
+  // more than once; it loads each provider at most once.
+  function load() {
+    if (loaded) return;
+    loaded = true;
 
-  // ── Load Meta Pixel ──
-  if (pixelEnabled) {
-    !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return; n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-      };
-      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-      n.queue = []; t = b.createElement(e); t.async = !0;
-      t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
-    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-    window.fbq('init', CONFIG.META_PIXEL_ID);
-    window.fbq('track', 'PageView');
+    // ── Load Google Analytics 4 ──
+    if (gaEnabled) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(CONFIG.GA4_ID);
+      document.head.appendChild(s);
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', CONFIG.GA4_ID);
+    }
+
+    // ── Load Meta Pixel ──
+    if (pixelEnabled) {
+      !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+        n.queue = []; t = b.createElement(e); t.async = !0;
+        t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+      }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', CONFIG.META_PIXEL_ID);
+      window.fbq('track', 'PageView');
+    }
   }
 
   // ── Event name mapping: GA4 event → Meta standard event ──
@@ -120,6 +130,7 @@
     enabled: gaEnabled || pixelEnabled,
     gaEnabled: gaEnabled,
     pixelEnabled: pixelEnabled,
+    load: load,
     track: track,
 
     viewItem: function (line) {
