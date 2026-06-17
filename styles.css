@@ -2276,7 +2276,7 @@ html { scroll-behavior: smooth; }
       letter-spacing: -0.02em;
       text-transform: none;
     }
-    #hero .hero-title span { display: block; color: rgba(255,255,255,0.46); }
+    #hero .hero-title span { display: block; color: var(--white); }
     #hero .hero-sub {
       font-size: clamp(1rem, 1.5vw, 1.15rem);
       font-weight: 300;
