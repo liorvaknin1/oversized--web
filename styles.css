@@ -2236,7 +2236,7 @@ html { scroll-behavior: smooth; }
     /* ── Hero ── */
     #hero {
       position: relative;
-      min-height: calc(100vh - var(--nav-h));
+      min-height: 100vh;
       display: flex;
       align-items: center;
       /* Reserve the left half for the full-bleed image (RTL: image sits on the left). */
@@ -2325,8 +2325,12 @@ html { scroll-behavior: smooth; }
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 22%;
+      object-position: center top;
       display: block;
+      /* Zoom into the model + back graphic so the empty dark sides
+         (doorway/wall) crop out and the figure fills the panel. */
+      transform: scale(1.32);
+      transform-origin: center 34%;
     }
     .hero-img.is-placeholder,
     .lookbook-tile.is-placeholder {
