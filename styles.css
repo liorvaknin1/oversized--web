@@ -2582,3 +2582,64 @@ html { scroll-behavior: smooth; }
       footer .footer-top { grid-template-columns: 1fr; }
       .lookbook-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Brand story (editorial) ── */
+    #story.story {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 120px 5vw;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .story-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 22px;
+    }
+    .story-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 30px;
+    }
+    .story-title span { color: rgba(255,255,255,0.4); }
+    .story-text {
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.75);
+      max-width: 640px;
+    }
+    .story-drop {
+      max-width: 640px;
+      margin-top: 72px;
+      padding-top: 44px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .story-drop-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 14px;
+    }
+    .story-drop-text {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .story-drop-punch {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    @media (max-width: 768px) {
+      #story.story { padding: 80px 5vw; }
+      .story-drop { margin-top: 56px; padding-top: 36px; }
+    }
