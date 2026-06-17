@@ -2578,32 +2578,34 @@ html { scroll-behavior: smooth; }
       .lookbook-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 640px) {
-      /* Phone: the landscape crops hard. Keep the model framed on the right,
-         darken the photo, and drop the text to the bottom so it never sits
-         on top of the model. */
+      /* Phone: the landscape crops hard and a fixed cookie banner sits along
+         the bottom on first load. Anchor the text to the TOP (over the dark
+         wall + the model's head) so the CTAs stay well above the banner, and
+         keep the BLOOM print visible below the text. */
       #hero {
-        align-items: flex-end;
+        align-items: flex-start;
         justify-content: stretch;
         min-height: 100svh;
-        padding: calc(var(--nav-h) + 24px) 7vw 52px;
+        padding: calc(var(--nav-h) + 30px) 7vw 40px;
       }
       #hero .hero-img img { object-position: 70% center; }
-      /* No empty wall survives the crop on a phone, so the text unavoidably
-         overlaps the model — darken the whole frame strongly (heavier toward
-         the bottom where the text lives) so every line stays legible. */
+      /* Darken the TOP where the text now lives; let the print stay clearer
+         in the lower half. */
       #hero .hero-scrim {
         background:
           linear-gradient(
-            to top,
-            rgba(0,0,0,0.96) 0%,
-            rgba(0,0,0,0.9) 28%,
-            rgba(0,0,0,0.74) 52%,
-            rgba(0,0,0,0.55) 78%,
-            rgba(0,0,0,0.4) 100%
+            to bottom,
+            rgba(0,0,0,0.94) 0%,
+            rgba(0,0,0,0.85) 26%,
+            rgba(0,0,0,0.6) 46%,
+            rgba(0,0,0,0.25) 68%,
+            rgba(0,0,0,0) 90%
           ),
-          linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.22));
+          linear-gradient(rgba(0,0,0,0.16), rgba(0,0,0,0.16));
       }
-      #hero .hero-content { max-width: 100%; width: 100%; gap: 20px; }
+      #hero .hero-content { max-width: 100%; width: 100%; gap: 18px; }
+      #hero .hero-title { font-size: clamp(2.4rem, 10vw, 3rem); }
+      #hero .hero-scroll { display: none; }
     }
     @media (max-width: 480px) {
       #hero .hero-btns { flex-direction: column; width: 100%; align-items: stretch; }
