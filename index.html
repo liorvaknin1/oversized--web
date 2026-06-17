@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=19" />
 
   <!-- Schema.org Organization -->
   <script type="application/ld+json">
@@ -104,7 +104,16 @@
 
   <!-- ─── HERO ─── -->
   <section id="hero">
-    <div class="hero-glow" aria-hidden="true"></div>
+    <!-- Full-bleed background photo (spans the entire hero, edge to edge).
+         To swap later, replace the files under assets/images/hero/
+         (keep both the .webp source and the .jpg fallback). -->
+    <div class="hero-visual">
+      <picture class="hero-img" data-img="assets/images/hero/hero-wide.jpg">
+        <source srcset="assets/images/hero/hero-wide.webp" type="image/webp" />
+        <img src="assets/images/hero/hero-wide.jpg" alt="דוגמן לובש חולצת OBSIZE oversized שחורה עם הדפס פרחי BLOOM, צילום גב על רקע קיר כהה" loading="eager" fetchpriority="high" />
+      </picture>
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
 
     <div class="hero-content">
       <p class="hero-eyebrow reveal">NEW DROP — SS25</p>
@@ -123,15 +132,6 @@
         <span>גלול למטה</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
       </a>
-    </div>
-
-    <div class="hero-visual reveal reveal-delay-2">
-      <!-- To swap the photo later, replace the files under assets/images/hero/
-           (keep both the .webp source and the .jpg fallback). data-img kept for reference. -->
-      <picture class="hero-img" data-img="assets/images/hero/hero-model.jpg">
-        <source srcset="assets/images/hero/hero-model.webp" type="image/webp" />
-        <img src="assets/images/hero/hero-model.jpg" alt="דוגמן לובש חולצת OBSIZE oversized שחורה עם הדפס פרחי BLOOM, צילום גב ברחוב אורבני" loading="eager" fetchpriority="high" />
-      </picture>
     </div>
 
     <div class="hero-side" aria-hidden="true">OBSIZE — OVERSIZED — STREETWEAR — DROP 01</div>
@@ -323,9 +323,9 @@
   </aside>
 
   <!-- ─── JS ─── -->
-  <script src="analytics.js?v=18"></script>
-  <script src="consent.js?v=18"></script>
-  <script src="products.js?v=18"></script>
-  <script src="script.js?v=18" defer></script>
+  <script src="analytics.js?v=19"></script>
+  <script src="consent.js?v=19"></script>
+  <script src="products.js?v=19"></script>
+  <script src="script.js?v=19" defer></script>
 </body>
 </html>
