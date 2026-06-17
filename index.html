@@ -126,11 +126,12 @@
     </div>
 
     <div class="hero-visual reveal reveal-delay-2">
-      <!-- Placeholder until a real model photo exists: set the background-image of
-           .hero-img (or drop in <img>) using data-img, then remove .is-placeholder. -->
-      <div class="hero-img is-placeholder" data-img="hero-model.jpg" role="img" aria-label="דוגמן לובש חולצת OBSIZE oversized">
-        <span class="placeholder-label">תמונת דוגמן — DROP 01</span>
-      </div>
+      <!-- To swap the photo later, replace the files under assets/images/hero/
+           (keep both the .webp source and the .jpg fallback). data-img kept for reference. -->
+      <picture class="hero-img" data-img="assets/images/hero/hero-model.jpg">
+        <source srcset="assets/images/hero/hero-model.webp" type="image/webp" />
+        <img src="assets/images/hero/hero-model.jpg" alt="דוגמן לובש חולצת OBSIZE oversized שחורה עם הדפס פרחי BLOOM, צילום גב ברחוב אורבני" loading="eager" fetchpriority="high" />
+      </picture>
     </div>
 
     <div class="hero-side" aria-hidden="true">OBSIZE — OVERSIZED — STREETWEAR — DROP 01</div>
