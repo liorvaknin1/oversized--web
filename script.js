@@ -9,10 +9,19 @@
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[c]));
       const formatPrice = (v) => `₪${v.toLocaleString('he-IL')}`;
+      const toWebp = (p) => p.replace(/\.(jpe?g|png)$/i, '.webp');
+      const picture = (src, cls, alt, decorative) => `
+              <picture class="${cls}">
+                <source srcset="${escapeHTML(toWebp(src))}" type="image/webp" />
+                <img src="${escapeHTML(src)}" alt="${escapeHTML(alt)}" loading="lazy"${decorative ? ' aria-hidden="true"' : ''} />
+              </picture>`;
 
       grid.innerHTML = Object.values(window.PRODUCTS).map((p, i) => {
-        const imgHTML = p.images && p.images[0]
-          ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />`
+        const primary = p.images && p.images[0];
+        const hover = p.images && p.images[1];
+        const imgHTML = primary
+          ? picture(primary, 'product-photo product-photo-main', p.name, false)
+            + (hover ? picture(hover, 'product-photo product-photo-hover', '', true) : '')
           : SHIRT_SVG;
 
         const colorsHTML = p.colors.map(c => {

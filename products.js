@@ -6,7 +6,7 @@ const PRODUCTS = {
     tag: 'New Drop',
     price: 169,
     description: 'הדפס "Paris in Nature" — מגדל אייפל עטוף בוורדים לבנים. עיצוב נקי בחזית ויצירה מלאה בגב, על חולצת oversized שחורה בבד כבד עם הדפס דיגיטלי באיכות גבוהה.',
-    images: ['paris.jpg'],
+    images: ['assets/images/products/paris.jpg', 'assets/images/products/paris-look.jpg'],
     ogImage: 'og-paris.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
@@ -33,7 +33,7 @@ const PRODUCTS = {
     tag: 'New Drop',
     price: 159,
     description: 'הדפס "Lotus — Inner Peace" עם פרח לוטוס ורוד מינימליסטי. עיצוב שקט ונקי על חולצת oversized שחורה, לאוהבי הסטייל המאופק.',
-    images: ['lotus.jpg'],
+    images: ['assets/images/products/lotus.jpg', 'assets/images/products/lotus-look.jpg'],
     ogImage: 'og-lotus.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
@@ -60,7 +60,7 @@ const PRODUCTS = {
     tag: 'New Drop',
     price: 165,
     description: 'הדפס "Eucalyptus — Harmony with Nature" עם פנדה על עץ אקליפטוס וכיתוב אנכי דרמטי. עיצוב עשיר ומלא נוכחות על חולצת oversized שחורה.',
-    images: ['eucalyptus.jpg'],
+    images: ['assets/images/products/eucalyptus.jpg', 'assets/images/products/eucalyptus-look.jpg'],
     ogImage: 'og-eucalyptus.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
@@ -87,7 +87,7 @@ const PRODUCTS = {
     tag: 'New Drop',
     price: 169,
     description: 'הדפס "Flamingo — Grace in Nature" עם פלמינגו והיביסקוס בגוונים חמים. עיצוב טרופי עשיר על חולצת oversized שחורה בבד כבד.',
-    images: ['flamingo.jpg'],
+    images: ['assets/images/products/flamingo.jpg'],
     ogImage: 'og-flamingo.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
@@ -114,7 +114,7 @@ const PRODUCTS = {
     tag: 'Hero Drop',
     price: 169,
     description: 'הפריט שהשיק את הקו — חולצת oversized עם הדפס BLOOM בלעדי. גזרה drop shoulder נדיבה, בד 250 גרם, הדפסה ישירה לבד שמחזיקה גם אחרי עשרות כביסות.',
-    images: ['bloom.jpg'],
+    images: ['assets/images/products/bloom.jpg', 'assets/images/products/bloom-look.jpg'],
     ogImage: 'og-bloom.png',
     colors: [
       { name: 'לבן', hex: '#fff' },
@@ -142,7 +142,7 @@ const PRODUCTS = {
     tag: 'New Drop',
     price: 150,
     description: 'הדפס בלעדי בהשראת עץ הסאקורה. עיצוב נקי בחזית ועיצוב מלא בגב. בד רך עם הדפס דיגיטלי באיכות גבוהה שלא נסדק.',
-    images: ['sakur.jpg'],
+    images: ['assets/images/products/sakur.jpg', 'assets/images/products/sakur-look.jpg'],
     ogImage: 'og-sakur.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
