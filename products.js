@@ -87,7 +87,7 @@ const PRODUCTS = {
     tag: 'New Drop',
     price: 169,
     description: 'הדפס "Flamingo — Grace in Nature" עם פלמינגו והיביסקוס בגוונים חמים. עיצוב טרופי עשיר על חולצת oversized שחורה בבד כבד.',
-    images: ['assets/images/products/flamingo.jpg'],
+    images: ['assets/images/products/flamingo.jpg', 'assets/images/products/flamingo-look.jpg'],
     ogImage: 'og-flamingo.png',
     colors: [
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
