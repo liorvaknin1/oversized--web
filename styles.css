@@ -173,7 +173,11 @@ html { scroll-behavior: smooth; }
       transition: color var(--ease);
     }
     .mobile-menu a:hover { color: var(--white); }
-    .mobile-menu .btn { width: 100%; margin-top: 8px; }
+    .mobile-menu .btn { width: 100%; margin-top: 8px; border-bottom: none; }
+    /* The CTA is an <a>, so .mobile-menu a would paint its label white on the
+       white button — force the primary button's own colours back. */
+    .mobile-menu .btn-primary { color: var(--black); }
+    .mobile-menu .btn-primary:hover { color: var(--black); }
 
     /* ─── HERO ─── */
     #hero {
