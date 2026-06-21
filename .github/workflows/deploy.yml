@@ -28,7 +28,7 @@ jobs:
       # but must NOT be served at obsize.com. Removed only from the ephemeral
       # runner checkout, so they stay in git.
       - name: Exclude dev-only files from the published site
-        run: rm -f session-notes.md
+        run: rm -f session-notes.md CLAUDE.md
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
