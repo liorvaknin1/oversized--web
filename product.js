@@ -106,10 +106,41 @@
     window.OBSIZE_ANALYTICS.viewItem({ id: product.id, name: product.name, price: product.price });
   }
 
-  // Main image / placeholder
+  // Main image + thumbnail gallery
   const mainImage = document.getElementById('pdpMainImage');
-  if (product.images && product.images.length > 0) {
-    mainImage.innerHTML = `<img src="${escapeHTML(product.images[0])}" alt="${escapeHTML(product.name)}" />`;
+  const thumbsEl = document.getElementById('pdpThumbnails');
+  const toWebp = (p) => p.replace(/\.(jpe?g|png)$/i, '.webp');
+  const galleryImgs = (product.images || []).filter(Boolean);
+  function renderMainImage(src) {
+    mainImage.innerHTML = `
+      <picture>
+        <source srcset="${escapeHTML(toWebp(src))}" type="image/webp" />
+        <img src="${escapeHTML(src)}" alt="${escapeHTML(product.name)}" />
+      </picture>`;
+  }
+  if (galleryImgs.length > 0) {
+    renderMainImage(galleryImgs[0]);
+    if (galleryImgs.length > 1) {
+      thumbsEl.innerHTML = galleryImgs.map((src, i) => `
+        <button type="button" class="pdp-thumb${i === 0 ? ' active' : ''}" data-src="${escapeHTML(src)}" aria-label="תצוגה ${i + 1} של ${escapeHTML(product.name)}"${i === 0 ? ' aria-current="true"' : ''}>
+          <picture>
+            <source srcset="${escapeHTML(toWebp(src))}" type="image/webp" />
+            <img src="${escapeHTML(src)}" alt="" loading="lazy" />
+          </picture>
+        </button>`).join('');
+      thumbsEl.hidden = false;
+      thumbsEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('.pdp-thumb');
+        if (!btn) return;
+        renderMainImage(btn.dataset.src);
+        thumbsEl.querySelectorAll('.pdp-thumb').forEach(b => {
+          const on = b === btn;
+          b.classList.toggle('active', on);
+          if (on) b.setAttribute('aria-current', 'true');
+          else b.removeAttribute('aria-current');
+        });
+      });
+    }
   } else {
     mainImage.innerHTML = SHIRT_SVG;
     mainImage.classList.add('is-placeholder');

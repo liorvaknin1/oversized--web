@@ -9,10 +9,19 @@
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[c]));
       const formatPrice = (v) => `₪${v.toLocaleString('he-IL')}`;
+      const toWebp = (p) => p.replace(/\.(jpe?g|png)$/i, '.webp');
+      const picture = (src, cls, alt, decorative) => `
+              <picture class="${cls}">
+                <source srcset="${escapeHTML(toWebp(src))}" type="image/webp" />
+                <img src="${escapeHTML(src)}" alt="${escapeHTML(alt)}" loading="lazy"${decorative ? ' aria-hidden="true"' : ''} />
+              </picture>`;
 
       grid.innerHTML = Object.values(window.PRODUCTS).map((p, i) => {
-        const imgHTML = p.images && p.images[0]
-          ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;" />`
+        const primary = p.images && p.images[0];
+        const hover = p.images && p.images[1];
+        const imgHTML = primary
+          ? picture(primary, 'product-photo product-photo-main', p.name, false)
+            + (hover ? picture(hover, 'product-photo product-photo-hover', '', true) : '')
           : SHIRT_SVG;
 
         const colorsHTML = p.colors.map(c => {
@@ -20,17 +29,12 @@
           return `<div class="color-dot" style="background:${c.hex};${border}" title="${escapeHTML(c.name)}"></div>`;
         }).join('');
 
-        const sizesHTML = p.sizes.map(s => {
-          const cls = ['size-btn'];
-          if (s.soldOut) cls.push('sold-out');
-          else if (s.label === p.defaultSize) cls.push('active');
-          return `<button class="${cls.join(' ')}">${escapeHTML(s.label)}</button>`;
-        }).join('');
-
         const dataAttrs = [
           `data-product-id="${escapeHTML(p.id)}"`,
           `data-product-name="${escapeHTML(p.name)}"`,
           `data-product-price="${p.price}"`,
+          `data-product-size="${escapeHTML(p.defaultSize || '')}"`,
+          `data-product-color="${escapeHTML(p.colors[0] ? p.colors[0].name : '')}"`,
           p.images && p.images[0] ? `data-product-image="${escapeHTML(p.images[0])}"` : '',
         ].filter(Boolean).join(' ');
 
@@ -40,16 +44,13 @@
           <div class="product-card reveal ${delayClass}" ${dataAttrs}>
             <div class="product-img">
               ${imgHTML}
-              <div class="product-img-overlay">
-                <button class="btn btn-primary add-to-cart-btn">הוסף לסל</button>
-              </div>
+              <span class="product-badge">NEW</span>
+              <button class="quick-add add-to-cart-btn" aria-label="הוספה מהירה לסל של ${escapeHTML(p.name)}">+</button>
             </div>
             <div class="product-info">
-              <p class="product-tag">${escapeHTML(p.tag || '')}</p>
               <h3 class="product-name">${escapeHTML(p.name)}</h3>
               <p class="product-price">${formatPrice(p.price)}</p>
               <div class="product-colors">${colorsHTML}</div>
-              <div class="product-sizes">${sizesHTML}</div>
             </div>
           </div>
         `;
@@ -395,23 +396,22 @@
           const price = parseInt(card.dataset.productPrice, 10);
           const image = card.dataset.productImage || '';
 
+          // Homepage cards have no size picker (sizes live on the PDP); the quick-add
+          // uses the product's default size. A size button is still honored if present
+          // (e.g. on other layouts).
           const activeSize = card.querySelector('.size-btn.active:not(.sold-out)');
-          const selectedColor = card.querySelector('.color-dot.selected') || card.querySelector('.color-dot');
+          const size = activeSize ? activeSize.textContent.trim() : (card.dataset.productSize || '');
+          const selectedColor = card.querySelector('.color-dot.selected');
+          const color = selectedColor
+            ? (selectedColor.getAttribute('title') || '')
+            : (card.dataset.productColor || '');
 
-          if (!activeSize) {
+          if (!size) {
             showToast('בחר מידה זמינה');
             return;
           }
 
-          addItem({
-            id,
-            name,
-            price,
-            image,
-            size: activeSize.textContent.trim(),
-            color: selectedColor ? (selectedColor.getAttribute('title') || '') : '',
-            qty: 1,
-          });
+          addItem({ id, name, price, image, size, color, qty: 1 });
 
           showToast('נוסף לעגלה');
           openDrawer();
@@ -464,3 +464,47 @@
         if (id) window.location.href = `product.html?id=${encodeURIComponent(id)}`;
       });
     });
+
+    // ── Newsletter signup (footer) ──
+    // Submits to Web3Forms (same free relay used for orders). To disable, remove
+    // the form or blank WEB3FORMS_KEY — it then just shows a thank-you message.
+    (function() {
+      const form = document.getElementById('newsletterForm');
+      if (!form) return;
+      const WEB3FORMS_KEY = '4a44305b-2c8b-47c6-8a17-d873e3c84ee8';
+      const emailInput = document.getElementById('newsletterEmail');
+      const msg = document.getElementById('newsletterMsg');
+
+      function showMsg(text, ok) {
+        if (!msg) return;
+        msg.textContent = text;
+        msg.hidden = false;
+        msg.classList.toggle('is-error', !ok);
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = (emailInput.value || '').trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showMsg('כתובת אימייל לא תקינה', false);
+          return;
+        }
+        form.querySelector('.newsletter-btn').disabled = true;
+
+        if (WEB3FORMS_KEY) {
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_KEY,
+              subject: 'OBSIZE — הרשמה לניוזלטר',
+              from_name: 'OBSIZE Newsletter',
+              email: email,
+              message: 'הרשמה חדשה לניוזלטר: ' + email,
+            }),
+          }).catch(() => {});
+        }
+        form.reset();
+        showMsg('תודה! קוד ההנחה בדרך אליך 🖤', true);
+      });
+    })();
