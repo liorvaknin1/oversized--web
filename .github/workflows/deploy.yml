@@ -24,6 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Dev/docs files that live in the repo (for backup + cross-machine sync)
+      # but must NOT be served at obsize.com. Removed only from the ephemeral
+      # runner checkout, so they stay in git.
+      - name: Exclude dev-only files from the published site
+        run: rm -f session-notes.md
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
