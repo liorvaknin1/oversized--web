@@ -48,7 +48,7 @@
 
 ## בעיות / חסמים פתוחים
 - אין חסמים פעילים.
-- **לפני deploy (2026-06-22)**: ערכנו `styles.css` + `script.js`, אך ה-cache-bust עדיין `?v=29` בכל העמודים. כדי שמבקרים חוזרים יקבלו את הקוד החדש — לבצע bump ל-`?v=30` בכל ה-HTML (index, product, shop, terms, privacy, accessibility, checkout). לא בוצע אוטומטית (נוגע בכמה קבצים) — לאשר לפני.
+- ✅ **deploy בוצע (2026-06-22, commit `b623e6a`)**: כל נכסי ה-cache-bust אוחדו ל-`?v=30` בכל 7 העמודים (היו שתי קונבנציות — v=29 בעמודים המעוצבים, v=16 בעמודי מדיניות/checkout). push ל-main, ה-workflow הסתיים. אומת מול האתר החי: `shop.html`=200, `styles.css?v=30`=200 (מכיל `.shop-grid`), `script.js?v=30`=200 (ללא parallax), קישורי "שופ"→`shop.html`.
 - `shop.html` הוא עמוד מתפרסם (לא dev) — לא צריך strip ב-deploy.yml.
 - **Cloudflare edge cache**: ייתכן שמשתמשי-קצה יראו עיצוב ישן זמנית עד שה-cache יתרענן (רענון קשיח פותר). ה-origin כבר מעודכן.
 - תזכורת אבטחה: ה-CSP הורחב ל-origin אחד (`api.web3forms.com`, ב-connect-src בלבד) — אם הניוזלטר לא יופעל, כדאי להסיר.
