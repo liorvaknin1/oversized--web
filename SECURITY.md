@@ -21,49 +21,8 @@ this repository.
 
 ## Security posture
 
-### Application layer (this repository)
-
-- All traffic is served over HTTPS.
-- A Content-Security-Policy meta tag on every page restricts script execution
-  to same-origin plus vetted analytics origins (Google Tag Manager, Meta),
-  and forbids `object`/`embed`, foreign base URIs, and off-site form posts.
-- `Referrer-Policy: strict-origin-when-cross-origin` on every page.
-- No inline event handlers or inline scripts (so `script-src` needs no
-  `'unsafe-inline'`).
-- An RFC 9116 disclosure file is published at
-  `/.well-known/security.txt`.
-- No secrets, API keys, or credentials are stored in the repository.
-- Payment card data is **never** handled, stored, or transmitted by this
-  site. When live payments are enabled, they are delegated to a
-  PCI-DSS-compliant payment provider using hosted fields / redirect, so card
-  data never touches our code.
-
-### Network / edge layer (Cloudflare)
-
-`obsize.com` is fronted by Cloudflare (Free plan), which proxies all traffic
-to the GitHub Pages origin. Configured protections:
-
-- **TLS:** SSL mode = Full; "Always Use HTTPS" on; **HSTS** enabled
-  (`max-age` 6 months).
-- **Response headers** added at the edge to every request:
-  - `Strict-Transport-Security` (HSTS)
-  - `X-Content-Type-Options: nosniff`
-  - `X-Frame-Options: DENY` (clickjacking protection)
-  - `Permissions-Policy: geolocation=(), microphone=(), camera=()`
-- **Bot Fight Mode** on, with automatic security level.
-- **Rate limiting:** 100 requests / 10 seconds per IP → Block (basic
-  DoS / abuse throttling).
-
-> Note: these edge protections only apply while the `obsize.com` DNS records
-> are **Proxied** (orange cloud) in Cloudflare. If a record is set to
-> "DNS only" (grey cloud), traffic bypasses Cloudflare and hits GitHub Pages
-> directly, and none of the above headers or rules are applied.
-
-### Account / repository
-
-- GitHub account protected with two-factor authentication (authenticator
-  app) and stored recovery codes.
-- Deployments run through GitHub Actions with read-only repository contents.
+Served over HTTPS with standard security headers (CSP, HSTS) behind an edge
+CDN/WAF. No payment card data is stored.
 
 ## Out of scope
 
