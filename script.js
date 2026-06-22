@@ -57,64 +57,6 @@
       }).join('');
     })();
 
-    // ── Hero Parallax ──
-    (function() {
-      const hero = document.getElementById('hero');
-      if (!hero) return;
-      const layers = hero.querySelectorAll('[data-parallax-speed]');
-
-      // Mouse-move parallax (desktop only)
-      let mouseX = 0, mouseY = 0;
-      let curX = 0, curY = 0;
-      let rafId = null;
-
-      function lerp(a, b, t) { return a + (b - a) * t; }
-
-      function tick() {
-        curX = lerp(curX, mouseX, 0.06);
-        curY = lerp(curY, mouseY, 0.06);
-
-        layers.forEach(el => {
-          const speed = parseFloat(el.dataset.parallaxSpeed);
-          const tx = curX * speed;
-          const ty = curY * speed;
-          el.style.transform = `translate(${tx}px, ${ty}px)`;
-        });
-
-        rafId = requestAnimationFrame(tick);
-      }
-
-      hero.addEventListener('mousemove', e => {
-        const rect = hero.getBoundingClientRect();
-        mouseX = (e.clientX - rect.left - rect.width  / 2);
-        mouseY = (e.clientY - rect.top  - rect.height / 2);
-      }, { passive: true });
-
-      hero.addEventListener('mouseleave', () => {
-        mouseX = 0; mouseY = 0;
-      }, { passive: true });
-
-      // Only run on non-touch devices
-      if (window.matchMedia('(hover: hover)').matches) {
-        tick();
-      }
-
-      // Scroll-based vertical shift for the visual card
-      const heroVisual = hero.querySelector('.hero-visual');
-      const heroContent = hero.querySelector('.hero-content');
-      const ghostText   = hero.querySelector('.hero-ghost-text');
-
-      window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        if (scrollY > window.innerHeight) return;
-        const pct = scrollY / window.innerHeight;
-
-        if (heroVisual)  heroVisual.style.transform  = `translateY(${pct * 60}px)`;
-        if (heroContent) heroContent.style.transform = `translateY(${pct * 30}px)`;
-        if (ghostText)   ghostText.style.transform   = `translate(-50%, calc(-50% + ${pct * 80}px))`;
-      }, { passive: true });
-    })();
-
     // ── Navbar scroll opacity ──
     const navbar = document.getElementById('navbar');
     if (navbar) {

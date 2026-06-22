@@ -264,6 +264,24 @@ html { scroll-behavior: smooth; }
       gap: 24px;
     }
 
+    /* ─── SHOP PAGE (shop.html) ─── */
+    /* Dedicated full catalog: clears the fixed navbar, 3 columns on desktop
+       and 2 on phones (the homepage grid stays a single-column showcase). */
+    #shop {
+      padding: calc(var(--nav-h) + 64px) 5vw 120px;
+    }
+    .shop-intro { margin-bottom: 56px; }
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      #shop { padding: calc(var(--nav-h) + 36px) 5vw 80px; }
+      .shop-intro { margin-bottom: 36px; }
+      .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    }
+
     .product-card {
       background: var(--gray-900);
       border: 1px solid rgba(255,255,255,0.06);
@@ -496,12 +514,6 @@ html { scroll-behavior: smooth; }
     @media (max-width: 1200px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 1024px) {
-      .why-grid { gap: 24px; }
-      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
-      .testimonials-grid .testimonial-card:last-child { display: none; }
-    }
-
     @media (max-width: 768px) {
       :root { --nav-h: 64px; }
 
@@ -515,16 +527,8 @@ html { scroll-behavior: smooth; }
       }
       .hero-content { align-items: flex-start; }
       .hero-sub { max-width: 100%; }
-      .hero-visual { margin-top: 48px; }
-      .hero-floating-tag { right: 0; bottom: 20px; }
 
       .products-grid { grid-template-columns: 1fr; }
-
-      .why-grid { grid-template-columns: 1fr; gap: 16px; }
-      .why-item { padding: 28px 20px; }
-
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .testimonials-grid .testimonial-card:last-child { display: block; }
 
       .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
 
@@ -533,12 +537,6 @@ html { scroll-behavior: smooth; }
         gap: 40px;
       }
       .footer-bottom { flex-direction: column; gap: 20px; }
-    }
-
-    @media (max-width: 480px) {
-      .hero-btns { flex-direction: column; width: 100%; }
-      .hero-btns .btn { width: 100%; }
-      .cta-final-title { font-size: 2rem; }
     }
 
     /* ─── CHECKOUT ─── */
