@@ -1250,6 +1250,79 @@ html { scroll-behavior: smooth; }
     .pdp-related-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
     .pdp-related-price { font-size: 0.85rem; color: rgba(255,255,255,0.55); }
 
+    /* Size guide modal */
+    .size-guide-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1300; /* above cookie banner + cart drawer */
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--ease), visibility var(--ease);
+    }
+    .size-guide-backdrop.open { opacity: 1; visibility: visible; }
+    .size-guide-modal {
+      width: 100%;
+      max-width: 420px;
+      background: var(--gray-900);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 24px;
+      transform: translateY(12px);
+      transition: transform var(--ease);
+    }
+    .size-guide-backdrop.open .size-guide-modal { transform: translateY(0); }
+    .size-guide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .size-guide-header h2 { font-size: 1.2rem; font-weight: 900; }
+    .size-guide-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color var(--ease);
+    }
+    .size-guide-close:hover, .size-guide-close:focus-visible { color: var(--white); }
+    .size-guide-note {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .size-guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .size-guide-table th {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.45);
+      padding: 8px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .size-guide-table td {
+      padding: 10px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .size-guide-table td:first-child { font-weight: 700; }
+    .size-guide-table tr:last-child td { border-bottom: none; }
+
     /* Not found */
     .pdp-not-found {
       max-width: 480px;

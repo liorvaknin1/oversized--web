@@ -30,6 +30,11 @@ jobs:
       - name: Exclude dev-only files from the published site
         run: rm -f session-notes.md CLAUDE.md SECURITY-internal.md .gitignore
 
+      # Static per-product pages (product-<id>.html) are committed, but we
+      # regenerate here too so they can never go stale vs products.js.
+      - name: Regenerate static product pages
+        run: node scripts/generate-product-pages.mjs
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

@@ -182,9 +182,24 @@
       let items = loadCart();
 
       function loadCart() {
+        // Harden against corrupted/tampered localStorage: anything that isn't
+        // an array of well-formed items is discarded, and numeric fields are
+        // coerced so rendering math never sees strings/NaN.
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          return raw ? JSON.parse(raw) : [];
+          const parsed = raw ? JSON.parse(raw) : [];
+          if (!Array.isArray(parsed)) return [];
+          return parsed
+            .filter(it => it && typeof it === 'object' && it.id && it.name)
+            .map(it => ({
+              id: String(it.id),
+              name: String(it.name),
+              price: Math.max(0, Number(it.price) || 0),
+              image: typeof it.image === 'string' ? it.image : '',
+              size: typeof it.size === 'string' ? it.size : '',
+              color: typeof it.color === 'string' ? it.color : '',
+              qty: Math.min(99, Math.max(1, Math.floor(Number(it.qty)) || 1)),
+            }));
         } catch (e) {
           return [];
         }
@@ -403,7 +418,8 @@
         // Don't navigate if user clicked an interactive element
         if (e.target.closest('button, a, .color-dot, .add-to-cart-btn')) return;
         const id = card.dataset.productId;
-        if (id) window.location.href = `product.html?id=${encodeURIComponent(id)}`;
+        // Static per-product pages (generated) — real OG tags for link sharing
+        if (id) window.location.href = `product-${encodeURIComponent(id)}.html`;
       });
     });
 

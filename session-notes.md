@@ -44,7 +44,18 @@
 6. **לשקול קטע ביקורות/המלצות** (נדחה) אם רוצים להחזיר (הוסר ברדיזיין).
 
 ### נותר dead-code קטן (לא קריטי)
-- `index.html:111` — תכונה `data-img` על `.hero-img` ששום JS לא קורא יותר (שריד). אפשר להסיר בסבב הבא.
+- ~~`index.html:111` — `data-img`~~ ✅ הוסר (2026-07-04).
+
+## סבב אבטחה + שיפורים (2026-07-04)
+- **אבטחה — מחירים מהקטלוג ב-checkout**: `checkout.js` כבר לא סומך על localStorage — שם/מחיר/תמונה נגזרים מחדש מ-`products.js` לפי id (`reviseAgainstCatalog`); פריטים שלא בקטלוג מושמטים; qty נחתך ל-1..99. אומת: עגלה מזויפת (מחיר 1, qty 500, פריט פיקטיבי) → סכום נכון ₪16,731. `products.js` נוסף ל-`checkout.html`.
+- **הקשחת `loadCart`** (script.js + checkout.js): אימות מערך, קירוץ מספרים, סינון פריטים חסרי id/name — localStorage משובש לא מפיל יותר את העגלה/צ'קאאוט.
+- **`product.js`**: הגנת `hasOwnProperty` (`?id=__proto__` → "מוצר לא נמצא" במקום קריסה).
+- **ולידציית תוקף כרטיס בעבר** ("הכרטיס פג תוקף").
+- **דפי מוצר סטטיים ל-OG**: `scripts/generate-product-pages.mjs` מג'נרט `product-<id>.html` (6 דפים, קומיט + רגנרוט אוטומטי ב-deploy.yml) עם OG/canonical/JSON-LD אפויים — שיתוף בוואטסאפ/פייסבוק מציג את המוצר הנכון. `product.js` קורא id גם מ-`body[data-product-id]`; קישורי כרטיסים/related/sitemap עודכנו. **כשמשנים את products.js או product.html — להריץ `node scripts/generate-product-pages.mjs`** (ה-deploy מרגנרט בכל מקרה).
+- **מודאל מדריך מידות** במקום alert (טבלה S–XXL, Esc/backdrop, נגיש). ⚠️ המידות סטנדרטיות — **לאמת מול מדידות אמיתיות** ולעדכן ב-`product.js` (SIZE_CHART).
+- **404.html ממותג** (noindex); **הוסרו כפתורי חיפוש/חשבון** המתים מהנאב (index+shop); `shop.html` נוסף ל-sitemap; כותרת PDP אוחדה ל-`<שם> — OBSIZE`.
+- **bump ל-`?v=31`** בכל העמודים.
+- **פעולות ידניות שנותרו (של המשתמש):** (1) Web3Forms דשבורד — להפעיל Spam Protection ולבדוק הגבלת דומיין; (2) לשקול Cloudflare Transform Rule ל-`frame-ancestors`/`X-Frame-Options` (clickjacking); (3) למסור מידות אמיתיות למדריך המידות.
 
 ## בעיות / חסמים פתוחים
 - אין חסמים פעילים.

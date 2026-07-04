@@ -1,8 +1,14 @@
 // Product page logic. Reads ?id=<id> from URL, populates the template.
 (function() {
+  // id comes from ?id=<id> (product.html) or from <body data-product-id>
+  // (the static per-product pages generated for social-share OG tags).
   const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  const product = id && window.PRODUCTS ? window.PRODUCTS[id] : null;
+  const id = params.get('id') || document.body.dataset.productId || null;
+  // hasOwnProperty guard: a crafted id like "__proto__" or "constructor" must
+  // resolve to "not found", not to an Object.prototype member (which crashes).
+  const product = id && window.PRODUCTS && Object.prototype.hasOwnProperty.call(window.PRODUCTS, id)
+    ? window.PRODUCTS[id]
+    : null;
 
   const pdp = document.getElementById('pdp');
   if (!pdp) return;
@@ -35,7 +41,7 @@
   const SHIRT_SVG = '<svg class="shirt-placeholder" viewBox="0 0 200 240" fill="white"><path d="M130 20 L170 45 L155 65 L140 55 L140 200 L60 200 L60 55 L45 65 L30 45 L70 20 Q85 10 100 10 Q115 10 130 20Z"/></svg>';
 
   // ── Populate static fields ──
-  document.title = `OBSIZE — ${product.name}`;
+  document.title = `${product.name} — OBSIZE`;
   document.getElementById('pdpBreadcrumbName').textContent = product.name;
   document.getElementById('pdpTag').textContent = product.tag || '';
   document.getElementById('pdpName').textContent = product.name;
@@ -44,7 +50,8 @@
 
   // ── SEO meta tags ──
   const BASE_URL = 'https://obsize.com';
-  const productUrl = `${BASE_URL}/product.html?id=${encodeURIComponent(product.id)}`;
+  // Canonical is the static per-product page (crawlable, real OG tags baked in)
+  const productUrl = `${BASE_URL}/product-${encodeURIComponent(product.id)}.html`;
   // Social share image: a 1200x630 branded OG card per product when one exists,
   // otherwise the generic site card. Never the raw portrait photo — WhatsApp and
   // Facebook need a landscape 1.91:1 image to render the link preview correctly.
@@ -251,10 +258,69 @@
     }
   });
 
-  // ── Size guide stub ──
-  document.getElementById('pdpSizeGuide').addEventListener('click', () => {
-    alert('מדריך מידות מפורט יתווסף בקרוב 📏');
-  });
+  // ── Size guide modal ──
+  // NOTE: measurements below are standard oversized drop-shoulder specs —
+  // verify against the actual garments and adjust here if needed.
+  (function() {
+    const SIZE_CHART = [
+      { size: 'S',   chest: 55, length: 70, shoulder: 52 },
+      { size: 'M',   chest: 57, length: 72, shoulder: 54 },
+      { size: 'L',   chest: 59, length: 74, shoulder: 56 },
+      { size: 'XL',  chest: 61, length: 76, shoulder: 58 },
+      { size: 'XXL', chest: 63, length: 78, shoulder: 60 },
+    ];
+
+    let modal = null;
+    let lastFocus = null;
+
+    function buildModal() {
+      if (modal) return modal;
+      modal = document.createElement('div');
+      modal.className = 'size-guide-backdrop';
+      modal.innerHTML = `
+        <div class="size-guide-modal" role="dialog" aria-modal="true" aria-labelledby="sizeGuideTitle">
+          <div class="size-guide-header">
+            <h2 id="sizeGuideTitle">מדריך מידות</h2>
+            <button type="button" class="size-guide-close" aria-label="סגירה">×</button>
+          </div>
+          <p class="size-guide-note">כל המידות בס"מ, נמדדות כשהחולצה שטוחה. הגזרה oversized — לגזרה צמודה יותר, רדו מידה.</p>
+          <table class="size-guide-table">
+            <thead>
+              <tr><th>מידה</th><th>רוחב חזה</th><th>אורך</th><th>כתפיים</th></tr>
+            </thead>
+            <tbody>
+              ${SIZE_CHART.map(r => `<tr><td>${r.size}</td><td>${r.chest}</td><td>${r.length}</td><td>${r.shoulder}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.closest('.size-guide-close')) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+      document.body.appendChild(modal);
+      return modal;
+    }
+
+    function openModal() {
+      lastFocus = document.activeElement;
+      buildModal();
+      void modal.offsetWidth; // reflow so the open transition runs
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      modal.querySelector('.size-guide-close').focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+
+    document.getElementById('pdpSizeGuide').addEventListener('click', openModal);
+  })();
 
   // ── Related products ──
   const related = Object.values(window.PRODUCTS).filter(p => p.id !== product.id).slice(0, 3);
@@ -266,7 +332,7 @@
         ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" loading="lazy" />`
         : SHIRT_SVG;
       return `
-        <a href="product.html?id=${encodeURIComponent(p.id)}" class="pdp-related-card">
+        <a href="product-${encodeURIComponent(p.id)}.html" class="pdp-related-card">
           <div class="pdp-related-img">${img}</div>
           <p class="pdp-related-name">${escapeHTML(p.name)}</p>
           <p class="pdp-related-price">${formatPrice(p.price)}</p>

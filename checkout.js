@@ -39,12 +39,44 @@
   }
 
   function loadCart() {
+    // Harden against corrupted/tampered localStorage: keep only well-formed
+    // items and coerce numeric fields so math never sees strings/NaN.
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      const parsed = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed
+        .filter(it => it && typeof it === 'object' && it.id && it.name)
+        .map(it => ({
+          id: String(it.id),
+          name: String(it.name),
+          price: Math.max(0, Number(it.price) || 0),
+          image: typeof it.image === 'string' ? it.image : '',
+          size: typeof it.size === 'string' ? it.size : '',
+          color: typeof it.color === 'string' ? it.color : '',
+          qty: Math.min(99, Math.max(1, Math.floor(Number(it.qty)) || 1)),
+        }))
+        .map(reviseAgainstCatalog)
+        .filter(Boolean);
     } catch (e) {
       return [];
     }
+  }
+
+  // SECURITY: the cart lives in localStorage, which the customer fully
+  // controls. Never trust its price/name — re-derive them from the shared
+  // catalog (products.js) by id, so the order email can't show a spoofed
+  // total. Items whose id is no longer in the catalog are dropped.
+  function reviseAgainstCatalog(it) {
+    const catalog = window.PRODUCTS;
+    if (!catalog || !Object.prototype.hasOwnProperty.call(catalog, it.id)) return null;
+    const p = catalog[it.id];
+    return {
+      ...it,
+      name: p.name,
+      price: p.price,
+      image: p.images && p.images[0] ? p.images[0] : it.image,
+    };
   }
 
   function formatPrice(value) {
@@ -128,6 +160,12 @@
       if (!m) return 'תוקף בפורמט MM/YY';
       const month = parseInt(m[1], 10);
       if (month < 1 || month > 12) return 'חודש לא תקין';
+      // Reject cards that are already expired (valid through end of MM/YY)
+      const year = 2000 + parseInt(m[2], 10);
+      const now = new Date();
+      if (year < now.getFullYear() || (year === now.getFullYear() && month < now.getMonth() + 1)) {
+        return 'הכרטיס פג תוקף';
+      }
       return true;
     },
     cardCvv: (v) => /^\d{3,4}$/.test(v) || 'CVV 3–4 ספרות',
