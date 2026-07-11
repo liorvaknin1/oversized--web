@@ -55,7 +55,16 @@
 - **מודאל מדריך מידות** במקום alert (טבלה S–XXL, Esc/backdrop, נגיש). ⚠️ המידות סטנדרטיות — **לאמת מול מדידות אמיתיות** ולעדכן ב-`product.js` (SIZE_CHART).
 - **404.html ממותג** (noindex); **הוסרו כפתורי חיפוש/חשבון** המתים מהנאב (index+shop); `shop.html` נוסף ל-sitemap; כותרת PDP אוחדה ל-`<שם> — OBSIZE`.
 - **bump ל-`?v=31`** בכל העמודים.
-- **פעולות ידניות שנותרו (של המשתמש):** (1) Web3Forms דשבורד — להפעיל Spam Protection ולבדוק הגבלת דומיין; (2) לשקול Cloudflare Transform Rule ל-`frame-ancestors`/`X-Frame-Options` (clickjacking); (3) למסור מידות אמיתיות למדריך המידות.
+- **פעולות ידניות שנותרו (של המשתמש):** (1) לשקול Cloudflare Transform Rule ל-`frame-ancestors`/`X-Frame-Options` (clickjacking); (2) למסור מידות אמיתיות למדריך המידות.
+
+## סבב hCaptcha ל-checkout (2026-07-11, commit `b2b4b6b`, v=32)
+- **הקשר**: המשתמש הפעיל בדשבורד Web3Forms — Captcha Protection = hCaptcha + Spam Level = Strict. מרגע זה כל שליחה בלי טוקן נדחית.
+- **אבחון קריטי**: ה-checkout שולח `fetch()` עם payload JSON **ידני** (בכוונה — כדי **לא** לשלוח פרטי כרטיס). לכן הפתרון הסטנדרטי (`new FormData(form)`) **אסור** כאן — היה סוחב את שדות האשראי ל-Web3Forms.
+- **checkout.html**: widget `.h-captcha[data-captcha]` מעל כפתור השליחה + `web3forms.com/client/script.js`; **CSP הורחב** ל-`hcaptcha.com`+`*.hcaptcha.com` (script/style/frame/connect) ו-`web3forms.com` (script).
+- **checkout.js**: קורא `h-captcha-response`, מזריק ל-payload הידני (כרטיס עדיין לא נשלח); חוסם שליחה בלי טוקן (הודעה); עבר ל-`async/await` — **success מוצג רק כש-`data.success===true`**. בכשל: עגלה נשמרת, captcha מתאפס, שגיאה מוצגת. **בוטל ה-fire-and-forget** — אין יותר כשל שקט.
+- **ניוזלטר (index+shop)**: חולק את אותו מפתח → ה-POST החי **נוטרל** (ולידציה+תודה בלבד). `api.web3forms.com` הוסר מ-connect-src ב-index/shop (checkout שומר עליו). להפעלה עתידית: מפתח נפרד בלי captcha, או widget משלו.
+- **אומת ב-preview**: widget נטען (iframe, `window.hcaptcha`), אין שגיאות CSP, שליחה בלי טוקן נחסמת (עגלה נשמרת), אין גלישה במובייל. **אומת חי**: widget+client script+CSP frame-src ב-checkout.html, token+success-gate ב-checkout.js, 0 קריאות web3forms ב-script.js.
+- **⚠️ נותרה בדיקת E2E אמיתית (של המשתמש)**: לא ניתן לפתור hCaptcha אוטומטית. המשתמש צריך: להוסיף פריט → checkout → למלא → לפתור captcha → לשלוח → לוודא שהמייל מגיע ל-lior@obsize.com (נמען מוגדר בדשבורד, לא בקוד). לבדוק גם: שליחה בלי captcha נחסמת.
 
 ## בעיות / חסמים פתוחים
 - אין חסמים פעילים.
