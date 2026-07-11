@@ -632,6 +632,26 @@ html { scroll-behavior: smooth; }
       letter-spacing: 0.02em;
     }
     .checkout-error:empty { display: none; }
+    /* Form-level error (captcha not solved / send failed) — bordered callout,
+       not the tiny inline field-error style. */
+    .checkout-form-error:not(:empty) {
+      min-height: 0;
+      padding: 12px 14px;
+      border: 1px solid rgba(239,68,68,0.4);
+      background: rgba(239,68,68,0.08);
+      border-radius: 3px;
+      line-height: 1.6;
+    }
+    .checkout-form-error[hidden] { display: none; }
+
+    /* hCaptcha widget — sits above the submit button. The iframe is a fixed
+       303px; keep it from overflowing the column on narrow phones. */
+    .h-captcha {
+      margin: 4px 0 2px;
+      min-height: 78px;
+    }
+    .h-captcha iframe { max-width: 100%; }
+
     .checkout-disclaimer {
       font-size: 0.78rem;
       color: rgba(255,255,255,0.5);

@@ -424,12 +424,16 @@
     });
 
     // ── Newsletter signup (footer) ──
-    // Submits to Web3Forms (same free relay used for orders). To disable, remove
-    // the form or blank WEB3FORMS_KEY — it then just shows a thank-you message.
+    // NOTE: sending is intentionally DISABLED. The order form's Web3Forms access
+    // key now has hCaptcha Captcha Protection enabled, which rejects any
+    // submission without a captcha token. This footer newsletter shares that key
+    // and has no captcha widget, so a live POST would just be rejected — a silent
+    // failure. Until the newsletter is properly wired (its own no-captcha key, or
+    // an hCaptcha widget added here), we validate + thank the user without
+    // sending. Re-enable by restoring the fetch AND adding a captcha/dedicated key.
     (function() {
       const form = document.getElementById('newsletterForm');
       if (!form) return;
-      const WEB3FORMS_KEY = '4a44305b-2c8b-47c6-8a17-d873e3c84ee8';
       const emailInput = document.getElementById('newsletterEmail');
       const msg = document.getElementById('newsletterMsg');
 
@@ -448,20 +452,7 @@
           return;
         }
         form.querySelector('.newsletter-btn').disabled = true;
-
-        if (WEB3FORMS_KEY) {
-          fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({
-              access_key: WEB3FORMS_KEY,
-              subject: 'OBSIZE — הרשמה לניוזלטר',
-              from_name: 'OBSIZE Newsletter',
-              email: email,
-              message: 'הרשמה חדשה לניוזלטר: ' + email,
-            }),
-          }).catch(() => {});
-        }
+        // Sending disabled (see note above) — do not POST to Web3Forms.
         form.reset();
         showMsg('תודה! קוד ההנחה בדרך אליך 🖤', true);
       });

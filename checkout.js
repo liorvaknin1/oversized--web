@@ -212,9 +212,39 @@
     });
   });
 
+  // ── hCaptcha helpers ──
+  // Web3Forms' Captcha Protection (hCaptcha) is enabled on this access key, so
+  // every submission must carry a valid h-captcha-response token or the API
+  // rejects it. The widget (rendered by web3forms client script) writes the
+  // token into a hidden field inside the form once solved.
+  const formError = document.getElementById('checkoutFormError');
+  function getCaptchaToken() {
+    const el = form.querySelector('[name="h-captcha-response"]');
+    return el && el.value ? el.value.trim() : '';
+  }
+  function showFormError(msg) {
+    if (!formError) return;
+    formError.textContent = msg;
+    formError.hidden = false;
+  }
+  function clearFormError() {
+    if (!formError) return;
+    formError.textContent = '';
+    formError.hidden = true;
+  }
+  function resetCaptcha() {
+    try { if (window.hcaptcha) window.hcaptcha.reset(); } catch (e) {}
+  }
+  function setLoading(on) {
+    submitBtn.disabled = on;
+    submitBtn.classList.toggle('is-loading', on);
+    submitBtn.querySelector('.checkout-submit-label').textContent = on ? 'מעבד הזמנה...' : 'השלם הזמנה';
+  }
+
   // ── Submit ──
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    clearFormError();
 
     const fields = Object.keys(VALIDATORS);
     const results = fields.map(validateField);
@@ -224,17 +254,26 @@
       return;
     }
 
-    // Simulate order processing
-    submitBtn.disabled = true;
-    submitBtn.classList.add('is-loading');
-    submitBtn.querySelector('.checkout-submit-label').textContent = 'מעבד הזמנה...';
+    // Block until the captcha is solved — otherwise Web3Forms would reject the
+    // order and (before this change) it would be lost silently.
+    const token = getCaptchaToken();
+    if (WEB3FORMS_ACCESS_KEY && !token) {
+      showFormError('אנא אשרו שאתם לא רובוט לפני שליחת ההזמנה.');
+      document.querySelector('.h-captcha')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      return;
+    }
 
-    setTimeout(() => {
-      placeOrder();
-    }, 900);
+    setLoading(true);
+    const ok = await placeOrder(token);
+    if (!ok) {
+      // Keep the cart and the filled form; let the customer retry.
+      setLoading(false);
+      showFormError('אירעה תקלה בשליחת ההזמנה. נסו שוב — לא בוצע חיוב והפריטים נשמרו בעגלה.');
+      resetCaptcha();
+    }
   });
 
-  function placeOrder() {
+  async function placeOrder(token) {
     const orderNumber = generateOrderNumber();
     const val = (id) => (document.getElementById(id)?.value || '').trim();
     const customer = {
@@ -247,9 +286,10 @@
       zip: val('zip'),
     };
 
-    // Send the order to the shop owner by email (no card data included).
-    // Fire before clearing the cart; failures never block the confirmation.
-    sendOrderNotification(orderNumber, customer);
+    // Only reveal the confirmation once the owner notification actually went
+    // through — a captcha/network rejection must NOT look like a placed order.
+    const sent = await sendOrderNotification(orderNumber, customer, token);
+    if (!sent) return false;
 
     // Show success view
     checkoutMain.hidden = true;
@@ -266,11 +306,14 @@
 
     // Scroll to top
     window.scrollTo(0, 0);
+    return true;
   }
 
   // Build a human-readable order and POST it to Web3Forms.
-  function sendOrderNotification(orderNumber, customer) {
-    if (!WEB3FORMS_ACCESS_KEY) return; // not configured yet — no-op
+  // Returns true only when the API confirms delivery (success:true), so the
+  // caller can keep the order intact on any failure.
+  async function sendOrderNotification(orderNumber, customer, token) {
+    if (!WEB3FORMS_ACCESS_KEY) return true; // not configured — pure demo, complete
 
     const lines = items.map(it => {
       const meta = [it.size && `מידה ${it.size}`, it.color].filter(Boolean).join(' · ');
@@ -291,6 +334,8 @@
       access_key: WEB3FORMS_ACCESS_KEY,
       subject: `הזמנה חדשה ${orderNumber} — OBSIZE`,
       from_name: 'OBSIZE Orders',
+      // Captcha Protection token — required, never a card field
+      'h-captcha-response': token,
       // structured fields (also shown in the Web3Forms dashboard/email)
       order_number: orderNumber,
       customer_name: `${customer.firstName} ${customer.lastName}`,
@@ -302,12 +347,16 @@
     };
 
     try {
-      fetch('https://api.web3forms.com/submit', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
-      }).catch(() => { /* ignore network errors — order still confirmed on screen */ });
-    } catch (e) { /* ignore */ }
+      });
+      const data = await res.json().catch(() => ({}));
+      return res.ok && data && data.success === true;
+    } catch (e) {
+      return false;
+    }
   }
 
   function generateOrderNumber() {
