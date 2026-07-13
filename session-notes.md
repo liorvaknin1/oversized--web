@@ -64,7 +64,7 @@
 - **checkout.js**: קורא `h-captcha-response`, מזריק ל-payload הידני (כרטיס עדיין לא נשלח); חוסם שליחה בלי טוקן (הודעה); עבר ל-`async/await` — **success מוצג רק כש-`data.success===true`**. בכשל: עגלה נשמרת, captcha מתאפס, שגיאה מוצגת. **בוטל ה-fire-and-forget** — אין יותר כשל שקט.
 - **ניוזלטר (index+shop)**: חולק את אותו מפתח → ה-POST החי **נוטרל** (ולידציה+תודה בלבד). `api.web3forms.com` הוסר מ-connect-src ב-index/shop (checkout שומר עליו). להפעלה עתידית: מפתח נפרד בלי captcha, או widget משלו.
 - **אומת ב-preview**: widget נטען (iframe, `window.hcaptcha`), אין שגיאות CSP, שליחה בלי טוקן נחסמת (עגלה נשמרת), אין גלישה במובייל. **אומת חי**: widget+client script+CSP frame-src ב-checkout.html, token+success-gate ב-checkout.js, 0 קריאות web3forms ב-script.js.
-- **⚠️ נותרה בדיקת E2E אמיתית (של המשתמש)**: לא ניתן לפתור hCaptcha אוטומטית. המשתמש צריך: להוסיף פריט → checkout → למלא → לפתור captcha → לשלוח → לוודא שהמייל מגיע ל-lior@obsize.com (נמען מוגדר בדשבורד, לא בקוד). לבדוק גם: שליחה בלי captcha נחסמת.
+- ✅ **בדיקת E2E אמיתית עברה (2026-07-11, ע"י המשתמש על האתר החי)**: הזמנה עם captcha פתור → מסך "תודה על ההזמנה" → **מייל התקבל ב-lior@obsize.com**. שליחה בלי captcha נחסמת. הזרימה מוכחת מקצה-לקצה: "תודה" מותנה ב-`success:true`, כך שאין יותר כשל שקט. הנמען המוגדר בדשבורד = lior@obsize.com (אושר).
 
 ## בעיות / חסמים פתוחים
 - אין חסמים פעילים.
