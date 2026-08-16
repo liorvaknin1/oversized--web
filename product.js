@@ -49,7 +49,11 @@
   // ── Populate static fields ──
   document.title = `${product.name} — OBSIZE`;
   document.getElementById('pdpBreadcrumbName').textContent = product.name;
-  document.getElementById('pdpTag').textContent = product.tag || '';
+  // A pre-launch item must not be labelled "NEW DROP" — that reads as "out
+  // now" and contradicts the waitlist directly below it.
+  const tagEl = document.getElementById('pdpTag');
+  tagEl.textContent = isAvailable ? (product.tag || '') : 'בקרוב';
+  tagEl.classList.toggle('pdp-tag-soon', !isAvailable);
   document.getElementById('pdpName').textContent = product.name;
   document.getElementById('pdpPrice').textContent = formatPrice(product.price);
   document.getElementById('pdpDescription').textContent = product.description;
@@ -441,9 +445,14 @@
       const img = p.images && p.images[0]
         ? `<img src="${escapeHTML(p.images[0])}" alt="${escapeHTML(p.name)}" loading="lazy" />`
         : SHIRT_SVG;
+      // Carry the pre-launch state here too, otherwise these read as buyable
+      // and the visitor only finds out after clicking through.
+      const soonHTML = p.available === false
+        ? '<span class="pdp-related-soon">בקרוב</span>'
+        : '';
       return `
         <a href="product-${encodeURIComponent(p.id)}.html" class="pdp-related-card">
-          <div class="pdp-related-img">${img}</div>
+          <div class="pdp-related-img">${img}${soonHTML}</div>
           <p class="pdp-related-name">${escapeHTML(p.name)}</p>
           <p class="pdp-related-price">${formatPrice(p.price)}</p>
         </a>

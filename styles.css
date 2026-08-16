@@ -1014,6 +1014,9 @@ html { scroll-behavior: smooth; }
       color: rgba(255,255,255,0.4);
     }
     .pdp-tag:empty { display: none; }
+    /* Pre-launch: brighter than the muted category tag, so the page's first
+       line states the status rather than burying it. */
+    .pdp-tag-soon { color: rgba(255,255,255,0.75); }
     .pdp-name {
       font-size: clamp(1.8rem, 3vw, 2.6rem);
       font-weight: 900;
@@ -1266,6 +1269,21 @@ html { scroll-behavior: smooth; }
     }
     .pdp-related-card:hover .pdp-related-img { border-color: rgba(255,255,255,0.2); }
     .pdp-related-img .shirt-placeholder { width: 50%; opacity: 0.12; }
+    /* Pre-launch marker on related cards — same language as the grid badge */
+    .pdp-related-img { position: relative; }
+    .pdp-related-soon {
+      position: absolute;
+      top: 8px; right: 8px;
+      padding: 3px 8px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 2px;
+      font-size: 0.55rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
     .pdp-related-img img {
       width: 100%;
       height: 100%;
