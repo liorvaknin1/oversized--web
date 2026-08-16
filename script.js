@@ -40,12 +40,23 @@
 
         const delayClass = `reveal-delay-${(i % 4) + 1}`;
 
+        // Pre-launch products are browsable but not purchasable: the badge
+        // reads "בקרוב" and the quick-add button is omitted entirely (rather
+        // than disabled) so there is nothing to click that cannot work.
+        const isAvailable = p.available !== false;
+        const badgeHTML = isAvailable
+          ? '<span class="product-badge">NEW</span>'
+          : '<span class="product-badge product-badge-soon">בקרוב</span>';
+        const quickAddHTML = isAvailable
+          ? `<button class="quick-add add-to-cart-btn" aria-label="הוספה מהירה לסל של ${escapeHTML(p.name)}">+</button>`
+          : '';
+
         return `
-          <div class="product-card reveal ${delayClass}" ${dataAttrs}>
+          <div class="product-card reveal ${delayClass}${isAvailable ? '' : ' is-unavailable'}" ${dataAttrs}>
             <div class="product-img">
               ${imgHTML}
-              <span class="product-badge">NEW</span>
-              <button class="quick-add add-to-cart-btn" aria-label="הוספה מהירה לסל של ${escapeHTML(p.name)}">+</button>
+              ${badgeHTML}
+              ${quickAddHTML}
             </div>
             <div class="product-info">
               <h3 class="product-name">${escapeHTML(p.name)}</h3>
@@ -189,8 +200,16 @@
           const raw = localStorage.getItem(STORAGE_KEY);
           const parsed = raw ? JSON.parse(raw) : [];
           if (!Array.isArray(parsed)) return [];
+          // Drop anything that is no longer purchasable, so a cart saved before
+          // a product went pre-launch ("בקרוב") cannot linger and be checked out.
+          const purchasable = (id) => {
+            const cat = window.PRODUCTS;
+            if (!cat || !Object.prototype.hasOwnProperty.call(cat, id)) return false;
+            return cat[id].available !== false;
+          };
           return parsed
             .filter(it => it && typeof it === 'object' && it.id && it.name)
+            .filter(it => purchasable(String(it.id)))
             .map(it => ({
               id: String(it.id),
               name: String(it.name),

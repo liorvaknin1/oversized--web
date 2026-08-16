@@ -71,6 +71,10 @@
     const catalog = window.PRODUCTS;
     if (!catalog || !Object.prototype.hasOwnProperty.call(catalog, it.id)) return null;
     const p = catalog[it.id];
+    // Pre-launch items can never become an order: a cart saved before the
+    // product was marked `available: false` must not reach the owner's inbox
+    // as something we cannot ship.
+    if (p.available === false) return null;
     return {
       ...it,
       name: p.name,

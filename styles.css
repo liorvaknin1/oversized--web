@@ -1169,6 +1169,11 @@ html { scroll-behavior: smooth; }
       letter-spacing: 0.06em;
       margin-top: 4px;
     }
+    /* .btn and .pdp-section both set `display`, which beats the browser's
+       `[hidden] { display: none }`. Without these the pre-launch state would
+       leave a visible, dead "הוסף לסל" button and quantity picker. */
+    .pdp-add[hidden] { display: none; }
+    .pdp-section[hidden] { display: none; }
     .pdp-add.shake {
       animation: pdp-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
     }
@@ -1269,6 +1274,53 @@ html { scroll-behavior: smooth; }
     }
     .pdp-related-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
     .pdp-related-price { font-size: 0.85rem; color: rgba(255,255,255,0.55); }
+
+    /* Pre-launch waitlist form (PDP) */
+    .pdp-notify {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.03);
+    }
+    .pdp-notify[hidden] { display: none; }
+    .pdp-notify-title { font-size: 1rem; font-weight: 700; }
+    .pdp-notify-sub {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.6);
+      margin-top: -6px;
+    }
+    .pdp-notify input[type="email"] {
+      width: 100%;
+      padding: 13px 14px;
+      background: var(--gray-900);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 3px;
+      color: var(--white);
+      font-family: inherit;
+      font-size: 0.92rem;
+      transition: border-color var(--ease);
+    }
+    .pdp-notify input[type="email"]::placeholder { color: rgba(255,255,255,0.3); }
+    .pdp-notify input[type="email"]:focus {
+      outline: none;
+      border-color: rgba(255,255,255,0.5);
+    }
+    .pdp-notify-btn { width: 100%; padding: 15px; }
+    .pdp-notify-btn[hidden] { display: none; }
+    .pdp-notify-msg {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #4ade80;
+    }
+    .pdp-notify-msg.is-error { color: #ef4444; }
+    .pdp-notify-msg[hidden] { display: none; }
+    /* hCaptcha iframe is a fixed 303px — never let it push the column wide */
+    .pdp-notify .h-captcha { min-height: 78px; }
+    .pdp-notify .h-captcha iframe { max-width: 100%; }
 
     /* Size guide modal */
     .size-guide-backdrop {
@@ -2078,6 +2130,15 @@ html { scroll-behavior: smooth; }
       font-weight: 800;
       letter-spacing: 0.12em;
       border-radius: 2px;
+    }
+    /* Pre-launch badge — outlined instead of solid white, so "בקרוב" reads as
+       a status rather than competing with the NEW badge's emphasis. */
+    .product-badge-soon {
+      background: rgba(0,0,0,0.55);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     .quick-add {
       position: absolute;

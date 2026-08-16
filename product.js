@@ -26,9 +26,15 @@
   }
 
   // ── State ──
+  // Pre-launch products aren't purchasable at all, so per-size sold-out marks
+  // are meaningless there (nothing has shipped yet). Treat every size as
+  // pickable so the waitlist can capture which size the visitor actually wants.
+  const isAvailable = product.available !== false;
+  const sizeBlocked = (s) => isAvailable && s.soldOut;
+
   let selectedColor = product.colors[0];
-  let selectedSize = product.sizes.find(s => s.label === product.defaultSize && !s.soldOut)
-    || product.sizes.find(s => !s.soldOut)
+  let selectedSize = product.sizes.find(s => s.label === product.defaultSize && !sizeBlocked(s))
+    || product.sizes.find(s => !sizeBlocked(s))
     || null;
   let qty = 1;
 
@@ -87,6 +93,11 @@
     ? `${BASE_URL}/${encodeURI(product.images[0])}`
     : ogImageUrl;
   const hasAvailableSize = product.sizes.some(s => !s.soldOut);
+  // Pre-launch → PreOrder (an honest "not yet released"), rather than
+  // OutOfStock which tells Google the catalog is dead stock.
+  const schemaAvailability = !isAvailable
+    ? 'https://schema.org/PreOrder'
+    : (hasAvailableSize ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock');
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -100,9 +111,7 @@
       url: productUrl,
       priceCurrency: 'ILS',
       price: product.price,
-      availability: hasAvailableSize
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
+      availability: schemaAvailability,
     },
   };
   const ldScript = document.getElementById('productJsonLd');
@@ -183,12 +192,13 @@
   function renderSizes() {
     sizesEl.innerHTML = product.sizes.map((s, i) => {
       const isSelected = selectedSize && s.label === selectedSize.label;
+      const blocked = sizeBlocked(s);
       const classes = ['pdp-size'];
-      if (s.soldOut) classes.push('sold-out');
+      if (blocked) classes.push('sold-out');
       if (isSelected) classes.push('selected');
-      return `<button type="button" class="${classes.join(' ')}" data-index="${i}"${s.soldOut ? ' disabled aria-disabled="true"' : ''}>${escapeHTML(s.label)}</button>`;
+      return `<button type="button" class="${classes.join(' ')}" data-index="${i}"${blocked ? ' disabled aria-disabled="true"' : ''}>${escapeHTML(s.label)}</button>`;
     }).join('');
-    if (selectedSize && selectedSize.soldOut) {
+    if (selectedSize && sizeBlocked(selectedSize)) {
       sizeNoteEl.hidden = false;
       sizeNoteEl.textContent = 'המידה אזלה — תהיה זמינה במלאי בקרוב';
     } else {
@@ -218,6 +228,7 @@
   // ── Add to cart ──
   const addBtn = document.getElementById('pdpAdd');
   addBtn.addEventListener('click', () => {
+    if (!isAvailable) return; // pre-launch: the waitlist form replaces this
     if (!selectedSize || selectedSize.soldOut) {
       addBtn.classList.add('shake');
       setTimeout(() => addBtn.classList.remove('shake'), 400);
@@ -257,6 +268,105 @@
       } catch (e) {}
     }
   });
+
+  // ── Pre-launch ("בקרוב") waitlist ──
+  // Swaps the buy controls for a notify-me form and posts signups to the shop
+  // owner via Web3Forms, including the size/colour the visitor picked — that is
+  // the whole point: it tells us what to actually order before we hold stock.
+  (function() {
+    const form = document.getElementById('pdpNotifyForm');
+    if (!form) return;
+
+    const qtySection = document.getElementById('pdpQtySection');
+    if (isAvailable) {
+      form.hidden = true;
+      return;
+    }
+
+    // Pre-launch layout: no quantity picker, no add-to-cart, show the waitlist.
+    if (qtySection) qtySection.hidden = true;
+    addBtn.hidden = true;
+    form.hidden = false;
+
+    // Same access key as the order form; it has hCaptcha Captcha Protection
+    // enabled, so a token is mandatory here too.
+    const WEB3FORMS_ACCESS_KEY = '4a44305b-2c8b-47c6-8a17-d873e3c84ee8';
+    const emailInput = document.getElementById('pdpNotifyEmail');
+    const btn = document.getElementById('pdpNotifyBtn');
+    const msg = document.getElementById('pdpNotifyMsg');
+
+    function showMsg(text, ok) {
+      msg.textContent = text;
+      msg.hidden = false;
+      msg.classList.toggle('is-error', !ok);
+    }
+    function getToken() {
+      const el = form.querySelector('[name="h-captcha-response"]');
+      return el && el.value ? el.value.trim() : '';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.hidden = true;
+
+      const email = (emailInput.value || '').trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showMsg('כתובת אימייל לא תקינה', false);
+        emailInput.focus();
+        return;
+      }
+      const token = getToken();
+      if (!token) {
+        showMsg('אנא אשרו שאתם לא רובוט.', false);
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'שולח...';
+
+      const variant = [selectedSize && selectedSize.label, selectedColor && selectedColor.name]
+        .filter(Boolean).join(' · ');
+      const payload = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `רישום לרשימת המתנה — ${product.name}`,
+        from_name: 'OBSIZE Waitlist',
+        'h-captcha-response': token,
+        product: product.name,
+        product_id: product.id,
+        variant: variant || '(לא נבחר)',
+        email,
+        message:
+          `רישום חדש לרשימת המתנה\n\n` +
+          `מוצר: ${product.name} (${product.id})\n` +
+          `מידה/צבע מבוקשים: ${variant || '(לא נבחר)'}\n` +
+          `אימייל: ${email}`,
+      };
+
+      let ok = false;
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        ok = res.ok && data && data.success === true;
+      } catch (err) { ok = false; }
+
+      if (ok) {
+        form.reset();
+        try { if (window.hcaptcha) window.hcaptcha.reset(); } catch (err) {}
+        btn.hidden = true;
+        showMsg('נרשמת! נעדכן אותך ברגע שהפריט יוצא 🖤', true);
+      } else {
+        // Never claim success we didn't get — the signup would be lost silently.
+        btn.disabled = false;
+        btn.textContent = 'עדכנו אותי כשיוצא';
+        try { if (window.hcaptcha) window.hcaptcha.reset(); } catch (err) {}
+        showMsg('אירעה תקלה. נסו שוב בעוד רגע.', false);
+      }
+    });
+  })();
 
   // ── Size guide modal ──
   // NOTE: measurements below are standard oversized drop-shoulder specs —

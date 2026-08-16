@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://web3forms.com https://hcaptcha.com https://*.hcaptcha.com https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://hcaptcha.com https://*.hcaptcha.com; frame-src https://hcaptcha.com https://*.hcaptcha.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://*.hcaptcha.com https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title id="pageTitle">Lotus — OBSIZE</title>
   <meta name="description" id="metaDescription" content="הדפס &quot;Lotus — Inner Peace&quot; עם פרח לוטוס ורוד מינימליסטי. עיצוב שקט ונקי על חולצת oversized שחורה, לאוהבי הסטייל המאופק." />
@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=32" />
+  <link rel="stylesheet" href="styles.css?v=33" />
 
   <!-- Schema.org Product (populated by product.js) -->
   <script type="application/ld+json" id="productJsonLd">{"@context":"https://schema.org","@type":"Product","name":"Lotus","description":"הדפס \"Lotus — Inner Peace\" עם פרח לוטוס ורוד מינימליסטי. עיצוב שקט ונקי על חולצת oversized שחורה, לאוהבי הסטייל המאופק.","image":"https://obsize.com/assets/images/products/lotus.jpg","brand":{"@type":"Brand","name":"OBSIZE"},"sku":"lotus","offers":{"@type":"Offer","url":"https://obsize.com/product-lotus.html","priceCurrency":"ILS","price":159,"availability":"https://schema.org/InStock"}}</script>
@@ -107,7 +107,7 @@
           <p class="pdp-size-note" id="pdpSizeNote" hidden></p>
         </div>
 
-        <div class="pdp-section">
+        <div class="pdp-section" id="pdpQtySection">
           <p class="pdp-section-label">כמות</p>
           <div class="pdp-qty">
             <button type="button" class="pdp-qty-btn" data-action="dec" aria-label="הפחת">−</button>
@@ -117,6 +117,19 @@
         </div>
 
         <button type="button" class="btn btn-primary pdp-add" id="pdpAdd">הוסף לסל</button>
+
+        <!-- Pre-launch waitlist. product.js reveals this (and hides the qty
+             picker + add-to-cart) when the catalog marks the product
+             available: false. Submits to Web3Forms with an hCaptcha token. -->
+        <form class="pdp-notify" id="pdpNotifyForm" novalidate hidden>
+          <p class="pdp-notify-title">הפריט עוד לא במלאי</p>
+          <p class="pdp-notify-sub">השאירו אימייל ונעדכן אתכם ברגע שהוא יוצא. בלי ספאם.</p>
+          <input type="email" id="pdpNotifyEmail" name="email" autocomplete="email" placeholder="your@email.com" required />
+          <div class="h-captcha" data-captcha="true"></div>
+          <button type="submit" class="btn btn-primary pdp-notify-btn" id="pdpNotifyBtn">עדכנו אותי כשיוצא</button>
+          <p class="pdp-notify-msg" id="pdpNotifyMsg" role="status" hidden></p>
+        </form>
+
         <p class="pdp-shipping-note">משלוח חינם · החזרה חינם עד 30 יום</p>
 
         <details class="pdp-accordion" open>
@@ -175,10 +188,12 @@
   </aside>
 
   <!-- ─── JS ─── -->
-  <script src="analytics.js?v=32"></script>
-  <script src="consent.js?v=32"></script>
-  <script src="products.js?v=32"></script>
-  <script src="product.js?v=32" defer></script>
-  <script src="script.js?v=32" defer></script>
+  <!-- hCaptcha renderer (Web3Forms) — renders the waitlist form's widget -->
+  <script src="https://web3forms.com/client/script.js" async defer></script>
+  <script src="analytics.js?v=33"></script>
+  <script src="consent.js?v=33"></script>
+  <script src="products.js?v=33"></script>
+  <script src="product.js?v=33" defer></script>
+  <script src="script.js?v=33" defer></script>
 </body>
 </html>

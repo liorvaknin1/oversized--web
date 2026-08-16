@@ -1,7 +1,15 @@
 // Shared product catalog. Both the homepage cards and the product page read from here.
+//
+// available: false  → pre-launch state ("בקרוב"). The product is browsable but
+//   NOT purchasable: no quick-add on cards, the PDP swaps "הוסף לסל" for the
+//   notify-me form, existing localStorage carts are emptied of it, and checkout
+//   refuses it. Schema.org availability becomes PreOrder.
+//   Flip a product to `available: true` when its stock actually arrives —
+//   this flag is the single source of truth, nothing else needs editing.
 const PRODUCTS = {
   'paris': {
     id: 'paris',
+    available: false,
     name: 'Paris',
     tag: 'New Drop',
     price: 169,
@@ -29,6 +37,7 @@ const PRODUCTS = {
   },
   'lotus': {
     id: 'lotus',
+    available: false,
     name: 'Lotus',
     tag: 'New Drop',
     price: 159,
@@ -56,6 +65,7 @@ const PRODUCTS = {
   },
   'eucalyptus': {
     id: 'eucalyptus',
+    available: false,
     name: 'Eucalyptus',
     tag: 'New Drop',
     price: 165,
@@ -83,6 +93,7 @@ const PRODUCTS = {
   },
   'flamingo': {
     id: 'flamingo',
+    available: false,
     name: 'Flamingo',
     tag: 'New Drop',
     price: 169,
@@ -110,6 +121,7 @@ const PRODUCTS = {
   },
   'bloom': {
     id: 'bloom',
+    available: false,
     name: 'BLOOM',
     tag: 'Hero Drop',
     price: 169,
@@ -138,6 +150,7 @@ const PRODUCTS = {
   },
   'sakur': {
     id: 'sakur',
+    available: false,
     name: 'Sakur',
     tag: 'New Drop',
     price: 150,
