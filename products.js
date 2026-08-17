@@ -129,7 +129,6 @@ const PRODUCTS = {
     images: ['assets/images/products/bloom.jpg', 'assets/images/products/bloom-look.jpg'],
     ogImage: 'og-bloom.png',
     colors: [
-      { name: 'לבן', hex: '#fff' },
       { name: 'שחור', hex: '#000', border: 'rgba(255,255,255,0.4)' },
     ],
     sizes: [
