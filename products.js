@@ -178,3 +178,11 @@ const PRODUCTS = {
 };
 
 window.PRODUCTS = PRODUCTS;
+
+// No retail price is confirmed yet. While this is false, prices are hidden
+// everywhere they are shown to a visitor — grid cards, the PDP, "אולי תאהבו
+// גם", and the Schema.org offer (a wrong price in structured data is worse
+// than no price: Google penalises price mismatches). The `price` values above
+// are kept only as placeholders for when pricing is set.
+// Flip to true once real prices are in — nothing else needs editing.
+window.OBSIZE_SHOW_PRICES = false;

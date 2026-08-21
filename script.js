@@ -9,6 +9,7 @@
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[c]));
       const formatPrice = (v) => `₪${v.toLocaleString('he-IL')}`;
+      const showPrices = window.OBSIZE_SHOW_PRICES !== false;
       const toWebp = (p) => p.replace(/\.(jpe?g|png)$/i, '.webp');
       const picture = (src, cls, alt, decorative) => `
               <picture class="${cls}">
@@ -60,7 +61,7 @@
             </div>
             <div class="product-info">
               <h3 class="product-name">${escapeHTML(p.name)}</h3>
-              <p class="product-price">${formatPrice(p.price)}</p>
+              ${showPrices ? `<p class="product-price">${formatPrice(p.price)}</p>` : ''}
               <div class="product-colors">${colorsHTML}</div>
             </div>
           </div>

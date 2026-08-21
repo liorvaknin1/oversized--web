@@ -55,7 +55,16 @@
   tagEl.textContent = isAvailable ? (product.tag || '') : 'בקרוב';
   tagEl.classList.toggle('pdp-tag-soon', !isAvailable);
   document.getElementById('pdpName').textContent = product.name;
-  document.getElementById('pdpPrice').textContent = formatPrice(product.price);
+  // Pricing not published yet → leave the price line out entirely rather than
+  // showing a placeholder figure (see OBSIZE_SHOW_PRICES in products.js).
+  const showPrices = window.OBSIZE_SHOW_PRICES !== false;
+  const priceEl = document.getElementById('pdpPrice');
+  if (showPrices) {
+    priceEl.textContent = formatPrice(product.price);
+  } else {
+    priceEl.textContent = '';
+    priceEl.hidden = true;
+  }
   document.getElementById('pdpDescription').textContent = product.description;
 
   // ── SEO meta tags ──
@@ -110,13 +119,13 @@
     image: schemaImageUrl,
     brand: { '@type': 'Brand', name: 'OBSIZE' },
     sku: product.id,
-    offers: {
-      '@type': 'Offer',
-      url: productUrl,
-      priceCurrency: 'ILS',
-      price: product.price,
-      availability: schemaAvailability,
-    },
+    // Offer keeps url + availability so the PreOrder signal survives, but the
+    // price fields are omitted until pricing is real — publishing a figure we
+    // haven't set would be a price mismatch against the eventual live price.
+    offers: Object.assign(
+      { '@type': 'Offer', url: productUrl, availability: schemaAvailability },
+      showPrices ? { priceCurrency: 'ILS', price: product.price } : {}
+    ),
   };
   const ldScript = document.getElementById('productJsonLd');
   if (ldScript) ldScript.textContent = JSON.stringify(jsonLd);
@@ -460,7 +469,7 @@
         <a href="product-${encodeURIComponent(p.id)}.html" class="pdp-related-card">
           <div class="pdp-related-img">${img}${soonHTML}</div>
           <p class="pdp-related-name">${escapeHTML(p.name)}</p>
-          <p class="pdp-related-price">${formatPrice(p.price)}</p>
+          ${showPrices ? `<p class="pdp-related-price">${formatPrice(p.price)}</p>` : ''}
         </a>
       `;
     }).join('');

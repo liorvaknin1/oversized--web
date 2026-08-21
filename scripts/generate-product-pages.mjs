@@ -15,9 +15,13 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BASE_URL = 'https://obsize.com';
 
 // products.js is a browser script ending in `window.PRODUCTS = PRODUCTS;` —
-// evaluate it with a stub window to extract the catalog.
+// evaluate it with a stub window to extract the catalog and its flags, so the
+// baked pages stay in lockstep with what the runtime renders.
 const catalogSource = readFileSync(join(root, 'products.js'), 'utf8');
-const PRODUCTS = new Function('window', `${catalogSource}; return window.PRODUCTS;`)({});
+const catalogWindow = {};
+new Function('window', catalogSource)(catalogWindow);
+const PRODUCTS = catalogWindow.PRODUCTS;
+const SHOW_PRICES = catalogWindow.OBSIZE_SHOW_PRICES !== false;
 
 const template = readFileSync(join(root, 'product.html'), 'utf8');
 
@@ -73,15 +77,21 @@ for (const product of Object.values(PRODUCTS)) {
     image: schemaImageUrl,
     brand: { '@type': 'Brand', name: 'OBSIZE' },
     sku: product.id,
-    offers: {
-      '@type': 'Offer',
-      url: productUrl,
-      priceCurrency: 'ILS',
-      price: product.price,
-      availability: product.sizes.some(s => !s.soldOut)
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-    },
+    // Must match what product.js computes at runtime, otherwise crawlers that
+    // don't execute JS read the baked value and see something else. Pre-launch
+    // is PreOrder, and the price fields are omitted while pricing is unset.
+    offers: Object.assign(
+      {
+        '@type': 'Offer',
+        url: productUrl,
+        availability: product.available === false
+          ? 'https://schema.org/PreOrder'
+          : (product.sizes.some(s => !s.soldOut)
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock'),
+      },
+      SHOW_PRICES ? { priceCurrency: 'ILS', price: product.price } : {}
+    ),
   };
   html = html.replace(
     /(<script type="application\/ld\+json" id="productJsonLd">)[^<]*(<\/script>)/,
