@@ -1412,6 +1412,18 @@ html { scroll-behavior: smooth; }
     }
     .size-guide-table td:first-child { font-weight: 700; }
     .size-guide-table tr:last-child td { border-bottom: none; }
+    .size-guide-tolerance {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.45);
+    }
+    /* Five columns of decimals need to stay readable on a 375px phone */
+    @media (max-width: 420px) {
+      .size-guide-table { font-size: 0.8rem; }
+      .size-guide-table th { font-size: 0.65rem; letter-spacing: 0.04em; }
+      .size-guide-table th, .size-guide-table td { padding-left: 2px; padding-right: 2px; }
+    }
 
     /* Not found */
     .pdp-not-found {

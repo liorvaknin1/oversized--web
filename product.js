@@ -373,15 +373,20 @@
   })();
 
   // ── Size guide modal ──
-  // NOTE: measurements below are standard oversized drop-shoulder specs —
-  // verify against the actual garments and adjust here if needed.
+  // Values come from the approved POM spec OBS-TEE-001 (Heavyweight Oversized
+  // Tee, 240 GSM single jersey, base size M, 11 Aug 2026). All figures are cm,
+  // measured flat — "chest" is the spec's half chest (side seam to side seam),
+  // which is exactly what a customer measures on a garment laid flat.
+  // Spec tolerance: ±1.0 on length/chest, ±0.5 on shoulder/sleeve.
+  // The spec also defines bottom hem, sleeve opening, armhole depth and neck
+  // width — omitted here as manufacturing points that would clutter the table.
   (function() {
     const SIZE_CHART = [
-      { size: 'S',   chest: 55, length: 70, shoulder: 52 },
-      { size: 'M',   chest: 57, length: 72, shoulder: 54 },
-      { size: 'L',   chest: 59, length: 74, shoulder: 56 },
-      { size: 'XL',  chest: 61, length: 76, shoulder: 58 },
-      { size: 'XXL', chest: 63, length: 78, shoulder: 60 },
+      { size: 'S',   chest: 57.5, length: 68, shoulder: 56.5, sleeve: 27 },
+      { size: 'M',   chest: 60,   length: 70, shoulder: 58,   sleeve: 28 },
+      { size: 'L',   chest: 62.5, length: 72, shoulder: 59.5, sleeve: 29 },
+      { size: 'XL',  chest: 65,   length: 74, shoulder: 61,   sleeve: 30 },
+      { size: 'XXL', chest: 67.5, length: 76, shoulder: 62.5, sleeve: 31 },
     ];
 
     let modal = null;
@@ -400,12 +405,13 @@
           <p class="size-guide-note">כל המידות בס"מ, נמדדות כשהחולצה שטוחה. הגזרה oversized — לגזרה צמודה יותר, רדו מידה.</p>
           <table class="size-guide-table">
             <thead>
-              <tr><th>מידה</th><th>רוחב חזה</th><th>אורך</th><th>כתפיים</th></tr>
+              <tr><th>מידה</th><th>חזה</th><th>אורך</th><th>כתפיים</th><th>שרוול</th></tr>
             </thead>
             <tbody>
-              ${SIZE_CHART.map(r => `<tr><td>${r.size}</td><td>${r.chest}</td><td>${r.length}</td><td>${r.shoulder}</td></tr>`).join('')}
+              ${SIZE_CHART.map(r => `<tr><td>${r.size}</td><td>${r.chest}</td><td>${r.length}</td><td>${r.shoulder}</td><td>${r.sleeve}</td></tr>`).join('')}
             </tbody>
           </table>
+          <p class="size-guide-tolerance">ייתכן הפרש של עד 1 ס"מ בין פריטים — זה נורמלי בייצור טקסטיל.</p>
         </div>`;
 
       modal.addEventListener('click', (e) => {
