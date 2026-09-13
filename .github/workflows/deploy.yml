@@ -27,8 +27,10 @@ jobs:
       # Dev/docs files that live in the repo (for backup + cross-machine sync)
       # but must NOT be served at obsize.com. Removed only from the ephemeral
       # runner checkout, so they stay in git.
+      # AGENTS.md is a symlink to CLAUDE.md (one source of truth for every
+      # coding agent); remove it before CLAUDE.md so nothing is left dangling.
       - name: Exclude dev-only files from the published site
-        run: rm -f session-notes.md CLAUDE.md SECURITY-internal.md .gitignore
+        run: rm -f AGENTS.md session-notes.md CLAUDE.md SECURITY-internal.md .gitignore
 
       # Static per-product pages (product-<id>.html) are committed, but we
       # regenerate here too so they can never go stale vs products.js.

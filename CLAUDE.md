@@ -24,4 +24,5 @@
 - mobile-first, רקע כהה הוא ברירת המחדל של המותג, עברית תמיד.
 - אחרי שינוי, סכם בשורה אחת לכל קובץ — אל תדפיס קבצים מלאים מחדש.
 - אם קיים session-notes.md, קרא אותו בתחילת העבודה.
-- קבצים פנימיים שלא מתפרסמים (session-notes.md, SECURITY-internal.md, .gitignore) מנוקים ב-strip ב-deploy.yml — כל קובץ dev עתידי, הוסף לאותה שורה.
+- קבצים פנימיים שלא מתפרסמים (AGENTS.md, session-notes.md, SECURITY-internal.md, .gitignore) מנוקים ב-strip ב-deploy.yml — כל קובץ dev עתידי, הוסף לאותה שורה.
+- AGENTS.md הוא symlink לקובץ הזה (Codex קורא AGENTS.md, Claude קורא CLAUDE.md) — ערוך רק את CLAUDE.md, שלא ייווצרו שתי גרסאות שמתפצלות.
