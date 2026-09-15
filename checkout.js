@@ -336,7 +336,11 @@
 
     const payload = {
       access_key: WEB3FORMS_ACCESS_KEY,
-      subject: `הזמנה חדשה ${orderNumber} — OBSIZE`,
+      // "[OBSIZE]" prefix is deliberate and must stay on every notification:
+      // one inbox rule (subject contains "[OBSIZE]" → never spam) then catches
+      // all of them. Web3Forms mail lands in spam by default, so this prefix is
+      // what keeps a real order from being missed.
+      subject: `[OBSIZE] הזמנה חדשה ${orderNumber}`,
       from_name: 'OBSIZE Orders',
       // Captcha Protection token — required, never a card field
       'h-captcha-response': token,

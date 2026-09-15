@@ -341,7 +341,10 @@
         .filter(Boolean).join(' · ');
       const payload = {
         access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `רישום לרשימת המתנה — ${product.name}`,
+        // Keep the "[OBSIZE]" prefix in sync with checkout.js — a single inbox
+        // rule matches on it, and without it waitlist mail carried no brand
+        // token at all and would have slipped past that rule into spam.
+        subject: `[OBSIZE] רישום לרשימת המתנה — ${product.name}`,
         from_name: 'OBSIZE Waitlist',
         'h-captcha-response': token,
         product: product.name,
