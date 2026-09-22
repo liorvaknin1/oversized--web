@@ -416,9 +416,21 @@
         else if (action === 'remove') removeItem(key);
       });
 
+      // There is no checkout while the shop is pre-launch — the button sends
+      // people to the drop signup instead. On pages that carry the footer form
+      // (index, shop) close the drawer and scroll to it; elsewhere (PDP) go to
+      // the homepage anchor.
       if (checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
-          window.location.href = 'checkout.html';
+          const signup = document.getElementById('newsletter');
+          if (signup) {
+            closeDrawer();
+            signup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const field = document.getElementById('newsletterEmail');
+            if (field) setTimeout(() => field.focus(), 400);
+          } else {
+            window.location.href = 'index.html#newsletter';
+          }
         });
       }
 
@@ -444,18 +456,18 @@
     });
 
     // ── Newsletter signup (footer) ──
-    // NOTE: sending is intentionally DISABLED. The order form's Web3Forms access
-    // key now has hCaptcha Captcha Protection enabled, which rejects any
-    // submission without a captcha token. This footer newsletter shares that key
-    // and has no captcha widget, so a live POST would just be rejected — a silent
-    // failure. Until the newsletter is properly wired (its own no-captcha key, or
-    // an hCaptcha widget added here), we validate + thank the user without
-    // sending. Re-enable by restoring the fetch AND adding a captcha/dedicated key.
+    // Live again: the form now carries its own hCaptcha widget, so it can use the
+    // same Web3Forms key as the order form (that key has Captcha Protection on,
+    // which is why sending was previously disabled here).
+    // Same rule as checkout: await the response and confirm only on success:true,
+    // so a signup is never lost behind a thank-you message.
     (function() {
       const form = document.getElementById('newsletterForm');
       if (!form) return;
+      const WEB3FORMS_KEY = '4a44305b-2c8b-47c6-8a17-d873e3c84ee8';
       const emailInput = document.getElementById('newsletterEmail');
       const msg = document.getElementById('newsletterMsg');
+      const btn = form.querySelector('.newsletter-btn');
 
       function showMsg(text, ok) {
         if (!msg) return;
@@ -463,17 +475,54 @@
         msg.hidden = false;
         msg.classList.toggle('is-error', !ok);
       }
+      function getToken() {
+        const el = form.querySelector('[name="h-captcha-response"]');
+        return el && el.value ? el.value.trim() : '';
+      }
 
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        msg && (msg.hidden = true);
+
         const email = (emailInput.value || '').trim();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           showMsg('כתובת אימייל לא תקינה', false);
           return;
         }
-        form.querySelector('.newsletter-btn').disabled = true;
-        // Sending disabled (see note above) — do not POST to Web3Forms.
-        form.reset();
-        showMsg('תודה! קוד ההנחה בדרך אליך 🖤', true);
+        const token = getToken();
+        if (!token) {
+          showMsg('אנא אשרו שאתם לא רובוט.', false);
+          return;
+        }
+
+        btn.disabled = true;
+        let ok = false;
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_KEY,
+              // "[OBSIZE]" prefix — the inbox rule that keeps this out of spam
+              // matches on it. Keep it on every notification.
+              subject: '[OBSIZE] הרשמה לניוזלטר',
+              from_name: 'OBSIZE Newsletter',
+              'h-captcha-response': token,
+              email,
+              message: 'הרשמה חדשה לניוזלטר: ' + email,
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          ok = res.ok && data && data.success === true;
+        } catch (err) { ok = false; }
+
+        try { if (window.hcaptcha) window.hcaptcha.reset(); } catch (err) {}
+        if (ok) {
+          form.reset();
+          showMsg('תודה! נעדכן אותך על הדרופ הבא 🖤', true);
+        } else {
+          btn.disabled = false;
+          showMsg('אירעה תקלה. נסו שוב בעוד רגע.', false);
+        }
       });
     })();

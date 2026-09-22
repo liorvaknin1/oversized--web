@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net; connect-src 'self' https://cloudflareinsights.com https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://web3forms.com https://hcaptcha.com https://*.hcaptcha.com https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://hcaptcha.com https://*.hcaptcha.com; frame-src https://hcaptcha.com https://*.hcaptcha.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net; connect-src 'self' https://cloudflareinsights.com https://api.web3forms.com https://hcaptcha.com https://*.hcaptcha.com https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>OBSIZE — החנות | כל חולצות ה-oversized</title>
   <meta name="description" content="כל חולצות ה-oversized של OBSIZE במקום אחד. בד כותנה כבד, גזרה drop shoulder, הדפסים בלעדיים. משלוח מהיר תוך 48 שעות." />
@@ -151,14 +151,19 @@
         </ul>
       </div>
 
-      <div class="footer-newsletter">
+      <div class="footer-newsletter" id="newsletter">
         <p class="footer-col-title">הצטרפו למשפחת OBSIZE</p>
         <p class="newsletter-sub">הישארו מעודכנים על הדרופ הבא.</p>
-        <form class="newsletter-form" id="newsletterForm" novalidate>
-          <input type="email" id="newsletterEmail" name="email" required placeholder="כתובת אימייל" aria-label="כתובת אימייל" />
-          <button type="submit" class="newsletter-btn" aria-label="הרשמה לניוזלטר">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-          </button>
+        <!-- The <form> is the wrapper so the hCaptcha token field sits inside it;
+             .newsletter-form stays the bordered input row it has always been. -->
+        <form id="newsletterForm" novalidate>
+          <div class="newsletter-form">
+            <input type="email" id="newsletterEmail" name="email" required placeholder="כתובת אימייל" aria-label="כתובת אימייל" />
+            <button type="submit" class="newsletter-btn" aria-label="הרשמה לניוזלטר">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            </button>
+          </div>
+          <div class="h-captcha newsletter-captcha" data-captcha="true"></div>
         </form>
         <p class="newsletter-msg" id="newsletterMsg" role="status" aria-live="polite" hidden></p>
       </div>
@@ -188,11 +193,13 @@
         <strong id="cartTotal">₪0</strong>
       </div>
       <p class="cart-shipping-note">משלוח יחושב בצ׳קאאוט</p>
-      <button class="btn btn-primary cart-checkout" id="cartCheckout">למעבר לתשלום</button>
+      <button class="btn btn-primary cart-checkout" id="cartCheckout">הרשמה לדרופ</button>
     </footer>
   </aside>
 
   <!-- ─── JS ─── -->
+  <!-- hCaptcha renderer (Web3Forms) — renders the newsletter widget -->
+  <script src="https://web3forms.com/client/script.js" async defer></script>
   <script src="analytics.js?v=41"></script>
   <script src="consent.js?v=41"></script>
   <script src="products.js?v=41"></script>

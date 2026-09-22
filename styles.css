@@ -2311,6 +2311,11 @@ html { scroll-behavior: smooth; }
     .newsletter-btn svg { width: 18px; height: 18px; }
     .newsletter-btn:hover { background: var(--gray-200); }
     .newsletter-btn:disabled { opacity: 0.6; cursor: default; }
+    /* hCaptcha under the newsletter row. The widget is a fixed 303px, so cap it
+       to the footer column width rather than letting it force a scrollbar. */
+    .newsletter-captcha { margin-top: 12px; min-height: 78px; }
+    .newsletter-captcha iframe { max-width: 100%; }
+
     .newsletter-msg {
       margin-top: 10px;
       font-size: 0.8rem;
