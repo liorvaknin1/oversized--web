@@ -13,7 +13,7 @@ const PRODUCTS = {
     name: 'BLOOM',
     tag: 'Hero Drop',
     price: 169,
-    description: 'הפריט שהשיק את הקו — חולצת oversized עם הדפס BLOOM בלעדי. גזרה drop shoulder נדיבה, בד 250 גרם, הדפסה ישירה לבד שמחזיקה גם אחרי עשרות כביסות.',
+    description: 'הפריט שהשיק את הקו — חולצת oversized עם הדפס BLOOM בלעדי. גזרה drop shoulder נדיבה, בד 240 גרם, הדפסה ישירה לבד.',
     images: ['assets/images/products/bloom.jpg', 'assets/images/products/bloom-look.jpg'],
     ogImage: 'og-bloom.png',
     colors: [
@@ -28,7 +28,7 @@ const PRODUCTS = {
     ],
     defaultSize: 'L',
     details: [
-      '100% כותנה פרמיום, 250 גרם/מ"ר',
+      '100% כותנה מסורקת ring-spun, 240 גרם/מ"ר',
       'הדפסה ישירה לבד (DTG) באיכות גבוהה',
       'גזרת drop shoulder oversized',
       'כביסה הפוכה ב-30°C',
@@ -41,7 +41,7 @@ const PRODUCTS = {
     name: 'Sakur',
     tag: 'New Drop',
     price: 150,
-    description: 'הדפס בלעדי בהשראת עץ הסאקורה. עיצוב נקי בחזית ועיצוב מלא בגב. בד רך עם הדפס דיגיטלי באיכות גבוהה שלא נסדק.',
+    description: 'הדפס בלעדי בהשראת עץ הסאקורה. עיצוב נקי בחזית ועיצוב מלא בגב. בד רך עם הדפס דיגיטלי באיכות גבוהה.',
     images: ['assets/images/products/sakur.jpg', 'assets/images/products/sakur-look.jpg'],
     ogImage: 'og-sakur.png',
     colors: [
@@ -58,9 +58,8 @@ const PRODUCTS = {
     details: [
       '100% כותנה, 240 גרם/מ"ר',
       'הדפס דיגיטלי איכותי',
-      'גזרה oversized סטנדרטית',
+      'גזרה drop shoulder',
       'כביסה הפוכה ב-30°C',
-      'אריזת מתנה זמינה בצ׳קאאוט',
     ],
   },
   'paris': {
@@ -84,8 +83,8 @@ const PRODUCTS = {
     ],
     defaultSize: 'L',
     details: [
-      '100% כותנה פרמיום, 240 גרם/מ"ר',
-      'הדפס דיגיטלי איכותי שלא נסדק',
+      '100% כותנה מסורקת ring-spun, 240 גרם/מ"ר',
+      'הדפס דיגיטלי איכותי',
       'גזרת drop shoulder oversized',
       'כביסה הפוכה ב-30°C',
       'מסדרת Midnight in Paris',
@@ -114,9 +113,8 @@ const PRODUCTS = {
     details: [
       '100% כותנה, 240 גרם/מ"ר',
       'הדפס דיגיטלי איכותי',
-      'גזרה oversized סטנדרטית',
+      'גזרה drop shoulder',
       'כביסה הפוכה ב-30°C',
-      'אריזת מתנה זמינה בצ׳קאאוט',
     ],
   },
   'eucalyptus': {
@@ -140,8 +138,8 @@ const PRODUCTS = {
     ],
     defaultSize: 'L',
     details: [
-      '100% כותנה פרמיום, 250 גרם/מ"ר',
-      'הדפס דיגיטלי איכותי שלא נסדק',
+      '100% כותנה מסורקת ring-spun, 240 גרם/מ"ר',
+      'הדפס דיגיטלי איכותי',
       'גזרת drop shoulder oversized',
       'כביסה הפוכה ב-30°C',
       'מסדרת Natural World',
@@ -168,8 +166,8 @@ const PRODUCTS = {
     ],
     defaultSize: 'L',
     details: [
-      '100% כותנה פרמיום, 250 גרם/מ"ר',
-      'הדפס דיגיטלי איכותי שלא נסדק',
+      '100% כותנה מסורקת ring-spun, 240 גרם/מ"ר',
+      'הדפס דיגיטלי איכותי',
       'גזרת drop shoulder oversized',
       'כביסה הפוכה ב-30°C',
       'מסדרת Natural World',
