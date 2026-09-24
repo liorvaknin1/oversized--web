@@ -17,6 +17,7 @@
 - ~~טופס הזמנות~~ — **הוסר מהאתר** (אין סליקה). כפתור המגירה מפנה ל"הרשמה לדרופ".
 - **טופס רשימת המתנה** (PDP) — מוגן hCaptcha, אומת E2E, שולח גם את המידה והצבע שנבחרו.
 - באנר עוגיות + אנליטיקס מגודר-הסכמה, `404.html` ממותג, sitemap, robots.
+- **כותרות אבטחה** — מוגדרות ב-**Cloudflare**, לא בריפו (ראה מלכודת #9).
 
 **מצב הקטלוג:**
 - 6 מוצרים, כולם `available: false` → באדג' "בקרוב", ללא כפתור הוספה, Schema `PreOrder`.
@@ -73,6 +74,20 @@ node scripts/generate-product-pages.mjs
 
 8. **טענות שיווקיות דורשות גיבוי.** סבב 2026-09-22 הסיר עשרות טענות לא מגובות (משלוח לכל העולם, תשלום מאובטח ללא סליקה, "שלא נסדק", "מחזיק שנים", הנחת 10%). **לפני שמוסיפים טענה — לוודא שהיא נכונה בפועל.**
 
+9. **כותרות האבטחה לא נמצאות בריפו — הן ב-Cloudflare.** חמש כותרות חוזרות מכל עמוד, וכולן מוגדרות ב-Transform Rule בשם **"Security headers"** (Rules → Transform Rules → Modify Response Header):
+
+   ```
+   Content-Security-Policy:   frame-ancestors 'none'
+   X-Frame-Options:           DENY
+   Permissions-Policy:        geolocation=(), microphone=(), camera=()
+   Strict-Transport-Security: max-age=15552000
+   X-Content-Type-Options:    nosniff
+   ```
+
+   **למה לא בריפו**: GitHub Pages **לא תומך בכותרות מותאמות** — אין `_headers`, אין `.htaccess`. ו-`frame-ancestors` ו-`X-Frame-Options` **מתעלמים מהם לחלוטין** כשהם מגיעים ב-`<meta http-equiv>` (מפורש במפרט ה-CSP). כלומר הוספה שלהם לתגי ה-meta הייתה **נראית כמו הגנה ולא עושה כלום**.
+
+   🚨 **אסור להכניס CSP מלא ל-Transform Rule הזה.** הערך חייב להישאר `frame-ancestors 'none'` בלבד. כש-header CSP ו-meta CSP מגיעים יחד הדפדפן אוכף את **שתיהן** בחיתוך המחמיר — CSP מלא בכותרת ייחתך מול זה שב-meta ויחסום את hCaptcha, את Web3Forms, את הגופנים ואת ה-beacon. **שינוי CSP של האתר נעשה בתגי ה-meta ב-14 קבצי ה-HTML, לא כאן.**
+
 ---
 
 ## פתוח / לא הושלם
@@ -80,7 +95,6 @@ node scripts/generate-product-pages.mjs
 **אין חסמים אדומים.** כל מה שנותר הוא דרגה שנייה:
 
 - **שגיאת CSP אחת בקונסול** — inline של Cloudflare JS Detections. **הוכרעה כ"משאירים"** (ראה החלטות). לחזור רק אם התוכנית תשודרג ל-Pro.
-- **clickjacking** — לשקול Cloudflare Transform Rule ל-`X-Frame-Options`/`frame-ancestors`.
 - **גיבוי להתראות** — לא לסמוך רק על מייל. הדשבורד של Web3Forms שומר כל פנייה; שווה להיכנס מדי פעם, או להוסיף ערוץ שני.
 - **קטע ביקורות** — הוסר ברדיזיין, לשקול החזרה.
 - **אין אינטגרציית סליקה** — `checkout.html` + `checkout.js` **הוסרו מהאתר** (strip ב-deploy.yml) ונשארו ב-git. כשתהיה סליקה: להסיר משורת ה-strip ולהחזיר את כפתור המגירה ל-checkout.
@@ -130,3 +144,7 @@ beacon של Cloudflare Analytics אושר ב-CSP ב-14 קבצים (אומת: נ�
 **הניוזלטר הוחייה** (היה מנוטרל): widget hCaptcha משלו, שליחה עם `await` + `success:true`, נושא `[OBSIZE]`, CSP הורחב ב-index/shop. ✅ **אומת E2E ע"י המשתמש (2026-09-24)** על האתר החי — הרשמה עברה והמייל הגיע לתיבה הנכנסת, כלומר גם תחילית ה-`[OBSIZE]` והפילטר עובדים עליו. ה-`<form>` הפך למעטפת כדי שה-widget לא ישבור את שורת ה-flex.
 **נגישות**: "בהתאם לתקן" → "בשאיפה לעמוד בדרישות"; "ונבדקת מעת לעת" הוסר.
 סטיות שנמצאו מול הרשימה: "שלא נסדק" היה **4 מופעים ולא 5** (Paris פעם אחת), ויש **6 דפי product-* ולא 7**.
+
+**2026-09-24 · הגנת clickjacking** (ללא שינוי קוד)
+`X-Frame-Options: DENY` כבר היה פעיל (אומת שמקורו ב-Cloudflare — GitHub Pages לא שולח אותו). נוסף `Content-Security-Policy: frame-ancestors 'none'` ל-Transform Rule "Security headers". **לא נגעתי בקוד** — ראה מלכודת #9 למה אי אפשר.
+אומת בכל 6 העמודים: header CSP **יחיד** עם הערך הנכון, XFO לא נדרס, אפס שגיאות CSP חדשות, ו-hCaptcha נטען בשני הטפסים (iframe 302x76, שדה הטוקן בתוך הטופס). נבדק גם שה-beacon וגופן Heebo לא נפגעו.
