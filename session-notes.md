@@ -74,19 +74,27 @@ node scripts/generate-product-pages.mjs
 
 8. **טענות שיווקיות דורשות גיבוי.** סבב 2026-09-22 הסיר עשרות טענות לא מגובות (משלוח לכל העולם, תשלום מאובטח ללא סליקה, "שלא נסדק", "מחזיק שנים", הנחת 10%). **לפני שמוסיפים טענה — לוודא שהיא נכונה בפועל.**
 
-9. **כותרות האבטחה לא נמצאות בריפו — הן ב-Cloudflare.** חמש כותרות חוזרות מכל עמוד, וכולן מוגדרות ב-Transform Rule בשם **"Security headers"** (Rules → Transform Rules → Modify Response Header):
+9. **כותרות האבטחה לא נמצאות בריפו — הן ב-Cloudflare, בשני מקומות שונים.** חמש כותרות חוזרות מכל עמוד, ולא כולן מאותו מקום:
 
+   **א. Transform Rule בשם "Security headers"** (Rules → Transform Rules → Modify Response Header) — שלוש:
    ```
    Content-Security-Policy:   frame-ancestors 'none'
    X-Frame-Options:           DENY
    Permissions-Policy:        geolocation=(), microphone=(), camera=()
+   ```
+
+   **ב. SSL/TLS → Edge Certificates → HSTS** — שתיים:
+   ```
    Strict-Transport-Security: max-age=15552000
    X-Content-Type-Options:    nosniff
    ```
+   ⚠️ הטוגל של **No-Sniff יושב בתוך חלון ה-HSTS**, לא ב-Transform Rules — קל לחפש אותו במקום הלא נכון.
+
+   **אף אחת לא מגיעה מ-GitHub Pages.** אומת: ה-origin מחזיר 301 ל-obsize.com (בגלל ה-CNAME) בלי אף אחת מהכותרות.
 
    **למה לא בריפו**: GitHub Pages **לא תומך בכותרות מותאמות** — אין `_headers`, אין `.htaccess`. ו-`frame-ancestors` ו-`X-Frame-Options` **מתעלמים מהם לחלוטין** כשהם מגיעים ב-`<meta http-equiv>` (מפורש במפרט ה-CSP). כלומר הוספה שלהם לתגי ה-meta הייתה **נראית כמו הגנה ולא עושה כלום**.
 
-   🚨 **אסור להכניס CSP מלא ל-Transform Rule הזה.** הערך חייב להישאר `frame-ancestors 'none'` בלבד. כש-header CSP ו-meta CSP מגיעים יחד הדפדפן אוכף את **שתיהן** בחיתוך המחמיר — CSP מלא בכותרת ייחתך מול זה שב-meta ויחסום את hCaptcha, את Web3Forms, את הגופנים ואת ה-beacon. **שינוי CSP של האתר נעשה בתגי ה-meta ב-14 קבצי ה-HTML, לא כאן.**
+   🚨 **אסור להכניס CSP מלא ל-Transform Rule.** הערך חייב להישאר `frame-ancestors 'none'` בלבד. כש-header CSP ו-meta CSP מגיעים יחד הדפדפן אוכף את **שתיהן** בחיתוך המחמיר — CSP מלא בכותרת ייחתך מול זה שב-meta ויחסום את hCaptcha, את Web3Forms, את הגופנים ואת ה-beacon. **שינוי CSP של האתר נעשה בתגי ה-meta ב-14 קבצי ה-HTML, לא כאן.**
 
 ---
 
